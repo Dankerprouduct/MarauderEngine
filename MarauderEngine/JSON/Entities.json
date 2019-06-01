@@ -1,0 +1,33 @@
+﻿[
+	{"entityName":"Jamal",
+		"components":
+		[
+			{
+				"componentName":"HealthComponent",
+				"health":100
+			},
+			{
+				"componentName":"SolidColliderComponent"
+			},
+			{
+				"componentName":"TransformComponent"
+			}
+		]
+	},
+	
+	{"entityName":"Jake",
+		"components":
+		[
+			{
+				"componentName":"HealthComponent",
+				"health":100
+			},
+			{
+				"componentName":"SolidColliderComponent"
+			},
+			{
+				"componentName":"TransformComponent"
+			}
+		]
+	}
+]

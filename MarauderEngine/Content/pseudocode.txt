@@ -1,0 +1,93 @@
+Problem 1 ========================================================
+
+sum = 0
+average = 0
+maxNumber = 0
+minNumber = 9999999999999
+
+FOR i <- 1 to 5 by 1 
+
+   currentNumber += Read();
+   sum += currentNumber;
+
+    IF(currentNumber > maxNumber)
+        maxNumber = currentNumber;
+    ENDIF
+
+    IF(currentNumber < minNumber)
+        minNumber = currentNumber;
+    ENDIF
+
+ENDFOR
+
+average = sum / 5
+
+PRINT("Average of all number = " + average);
+PRINT("Maximum number = " + maxNumber); 
+PRINT("Minimum number = " + minNumber); 
+
+
+
+Problem 2 =======================================================
+
+stoppingPoint = Read(); 
+sum = 0
+
+For i = 0; i <= stoppingPoint; i += 2
+
+    sum += i; 
+
+ENDIF
+
+Print("Stopping point: " + stoppingPoint)
+Priint("Sum of all evens: " + sum)
+
+
+Problem 3 =======================================================
+
+print("how old are you") 
+age = Read()
+
+Print("Your age today = " + age) 
+
+Print("Your age in 20 years = " + (age + 20))
+
+
+Problem 4 =======================================================
+
+
+number = 0
+
+Print("Enter a number)
+number = Read()
+
+Print("You entered: " + number)
+
+if(number > 0 AND number < 10)
+    Print("Your color: " + Blue)
+
+elseif(number > 10 AND number < 20)
+    Print("Your color: " + Red)
+
+elseif(number > 20 AND number < 30)
+
+    Print("Your color: " + Green)
+else
+    Print("Your color: This color is not an option")
+endif 
+
+
+Problem 5 ========================================================
+
+fries = 3
+burger = 6
+drink = 1 
+tax = (fries + burger + drink) * .1
+
+total = fries + burger + drink + tax
+
+Print("Fries price:  " + fries + "  dollars")
+Print("Burger price: " + burger + "  dollars")
+Print("Drink price:  " + drink + "  dollars")
+Print("Tax:          " + tax + " dollars")
+Print("Total         " + total  + " dollars")
