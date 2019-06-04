@@ -127,7 +127,7 @@ namespace MarauderEngine.Components
                 else
                 {
                     spriteBatch.Draw(TextureManager.GetContent<Texture2D>(_textureName),
-                        Owner.GetComponent<TransformComponent>().Position, Color.White);
+                        Owner.GetComponent<TransformComponent>().Position, Color);
                 }
             }
         }

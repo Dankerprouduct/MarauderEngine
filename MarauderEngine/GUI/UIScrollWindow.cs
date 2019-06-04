@@ -11,6 +11,8 @@ namespace MarauderEngine.GUI
     public class UIScrollWindow: UIWindow
     {
         public bool Scroll { get; set; }
+        public bool HorizontalScroll = false;
+        public int ScrollSpeed = 10; 
         public UIScrollWindow(Point origin, Point size, bool enabled) : base(origin, size, enabled)
         {
             Scroll = true;
@@ -33,12 +35,21 @@ namespace MarauderEngine.GUI
             {
                 if (Scroll)
                 {
+
+
                     if (UIManager.Instance.CurrentMouseState.ScrollWheelValue >
                         UIManager.Instance.PrevopisMouseState.ScrollWheelValue)
                     {
                         for (int i = 0; i < GetElements().Count; i++)
                         {
-                            Elements[i].AddPosition(new Point(0, -10));
+                            if (!HorizontalScroll)
+                            {
+                                Elements[i].AddPosition(new Point(0, -ScrollSpeed));
+                            }
+                            else
+                            {
+                                Elements[i].AddPosition(new Point(-ScrollSpeed, 0));
+                            }
                         }
 
                     }
@@ -48,7 +59,14 @@ namespace MarauderEngine.GUI
                     {
                         for (int i = 0; i < GetElements().Count; i++)
                         {
-                            Elements[i].AddPosition(new Point(0, 10));
+                            if (!HorizontalScroll)
+                            {
+                                Elements[i].AddPosition(new Point(0, ScrollSpeed));
+                            }
+                            else
+                            {
+                                Elements[i].AddPosition(new Point(ScrollSpeed, 0));
+                            }
                         }
 
                     }

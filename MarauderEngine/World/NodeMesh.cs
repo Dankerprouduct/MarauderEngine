@@ -28,6 +28,23 @@ namespace MarauderEngine.World
             }
         }
 
+        /// <summary>
+        /// removes all nodes from node mesh 
+        /// </summary>
+        public void FlushNodeMesh()
+        {
+            if (map != null)
+            {
+                for (int x = 0; x < map.GetLength(0); x++)
+                {
+                    for (int y = 0; y < map.GetLength(1); y++)
+                    {
+                        map[x, y] = null;
+                    }
+                }
+            }
+        }
+
         public void MakeMap(int walkableTile, int impassableTile, int[,] map)
         {
             this.map = new Node[map.GetLength(0), map.GetLength(1)];
@@ -65,7 +82,7 @@ namespace MarauderEngine.World
                         //this.map[x, y].arrayPosition = new Point(x, y); 
                         allAvailiableNodes.Add(this.map[x, y]);
                     }
-                    else
+                    else 
                     {
                         this.map[x, y] = null;
                     }
@@ -91,18 +108,6 @@ namespace MarauderEngine.World
                     }
                 }
 
-                //for (int x = Camera.Instance.GetTopLeftCell(); x <= Camera.Instance.GetTopRightCell(); x++)
-                //{
-                //    for (int y = Camera.Instance.GetTopLeftCell(); y <= Camera.Instance.GetBottomLeft(); y++)
-                //    {
-                //        if (x >= 0 && x < map.GetLength(0) && y >= 0 && y < map.GetLength(1))
-                //        {
-                //            GUI.GUI.DrawCircle(
-                //                new Vector2(map[x, y].arrayPosition.X * 128 + 64 - 15,
-                //                    map[x, y].arrayPosition.Y * 128 + 64 - 15), 30, Color.LimeGreen * 1f);
-                //        }
-                //    }
-                //}
             }
         }
 

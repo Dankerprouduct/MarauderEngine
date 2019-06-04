@@ -2,8 +2,15 @@
 {
     public  interface IComponent
     {
+        /// <summary>
+        /// What Entity this Component is assigned to
+        /// </summary>
         MarauderEngine.Entity.Entity Owner { get; set; }
         string Name { get; set; }
+
+        /// <summary>
+        /// Whether or not this component is being updated
+        /// </summary>
         bool Active { get; set; }
 
         /// <summary>
@@ -15,12 +22,19 @@
 
         /// <summary>
         /// Receives Event
+        /// Should return false as default.
         /// </summary>
         /// <param name="eEvent"></param>
         bool FireEvent(Event eEvent);
 
+        /// <summary>
+        /// Updates the Component. Updates are called from the Owner's Update method. 
+        /// </summary>
         void UpdateComponent();
 
+        /// <summary>
+        /// Destroys the Component on Owner's DestroyEntity method.
+        /// </summary>
         void Destroy(); 
 
     }

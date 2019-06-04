@@ -1,12 +1,14 @@
 ﻿using System.IO;
+using System.IO.Compression;
 using Newtonsoft.Json;
+
 
 namespace MarauderEngine.Utilities
 {
     public class GameData<T>
     {
 
-        private JsonSerializerSettings settings;
+        public JsonSerializerSettings settings { get; private set; }
         public string folderPath = @"Saves\";
 
         /// <summary>
@@ -24,6 +26,13 @@ namespace MarauderEngine.Utilities
             };
             
         }
+
+        public GameData(JsonSerializerSettings settings)
+        {
+            this.settings = settings;
+        }
+
+
 
         /// <summary>
         /// Serializes Data into an indented json file
@@ -89,6 +98,45 @@ namespace MarauderEngine.Utilities
 
         }
 
+        /// <summary>
+        /// Serializes Data into an indented json file
+        /// </summary>
+        /// <param name="data">data to serialize</param>
+        /// <param name="fileName">name of file to create or overide</param>
+        public void SaveZippedData(T data, string fileName, string extension = ".zip")
+        {
+            var tempFolder = @"Temp\";
 
+            string json = JsonConvert.SerializeObject(data, Formatting.Indented, settings);
+            string newPath = folderPath + tempFolder + @"\" + fileName + ".json";
+            (new FileInfo(folderPath + tempFolder + @"\")).Directory.Create();
+            
+            File.WriteAllText(newPath, json);
+            ZipFile.CreateFromDirectory(folderPath + tempFolder, folderPath + @"\" + fileName + extension, CompressionLevel.Optimal, false);
+            (new FileInfo(newPath)).Delete();
+            (new FileInfo(folderPath + tempFolder + @"\")).Directory.Delete();
+        }
+        
+        /// <summary>
+        /// Deserializes data into an object
+        /// </summary>
+        /// <param name="fileName">name of file to deserialize</param>
+        /// <returns></returns>
+        public T LoadZippedData(string fileName, string extension = ".zip")
+        {
+            var tempFolder = @"Temp\";
+            (new FileInfo(folderPath + tempFolder + @"\")).Directory.Create();
+            ZipFile.ExtractToDirectory(folderPath + @"\" + fileName + extension, folderPath + tempFolder + @"\");
+
+            string contents = File.ReadAllText(folderPath + tempFolder + @"\" + fileName + ".json");
+            (new FileInfo(folderPath + tempFolder + @"\" + fileName + ".json")).Delete();
+
+            (new FileInfo(folderPath + tempFolder + @"\")).Directory.Delete();
+
+            T tempEntities = JsonConvert.DeserializeObject<T>(contents, settings);
+
+            return tempEntities;
+
+        }
     }
 }

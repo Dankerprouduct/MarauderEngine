@@ -14,6 +14,7 @@ namespace MarauderEngine.World
 
         public static void SetNodeMesh(NodeMesh nodemesh)
         {
+            if(Node_Mesh != null) Node_Mesh.FlushNodeMesh();
             Node_Mesh = nodemesh; 
         }
 

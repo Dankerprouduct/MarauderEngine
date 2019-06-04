@@ -35,12 +35,20 @@ namespace MarauderEngine.GUI
             PrevopisMouseState = CurrentMouseState;
         }
 
-
+        /// <summary>
+        /// Adds and element to the pool of IUIElements
+        /// these methods will be updated and drawn automatically 
+        /// </summary>
+        /// <param name="element"></param>
         public void AddElement(IUIElement element)
         {
             _uiElements.Add(element);
         }
 
+        /// <summary>
+        /// Removes an IUIElement from the pool of IUIElements
+        /// </summary>
+        /// <param name="element"></param>
         public void RemoveElement(IUIElement element)
         {
             _uiElements.Remove(element);

@@ -79,9 +79,25 @@ namespace MarauderEngine.Graphics
             _contentDictionary.Add(name, content.Load<T>(folderPath + "/" + name));
         }
 
+        /// <summary>
+        /// returns content given the key
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static T GetContent<T>(string name)
         {
             return (T)_contentDictionary[name];
+        }
+
+        /// <summary>
+        /// returns whether or not content by the given key exists
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static bool ContainsContent(string name)
+        {
+            return _contentDictionary.ContainsKey(name);
         }
 
         [System.Obsolete()]
