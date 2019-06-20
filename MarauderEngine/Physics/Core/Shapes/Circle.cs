@@ -59,31 +59,46 @@ namespace MarauderEngine.Physics.Core.Shapes
 
         public bool Intersects(ICollider collider)
         {
-            Circle a = this;
-            Circle b = ((Circle)collider);
-            float r = b._radius + a._radius;
-            r *= r;
-            float valueToCheck = ((b.Particle.Position.X - a.Particle.Position.X) *
-                                  (b.Particle.Position.X - a.Particle.Position.X)) +
-                                 ((b.Particle.Position.Y - a.Particle.Position.Y)) *
-                                 ((b.Particle.Position.Y - a.Particle.Position.Y)); 
-
-            bool result = r >= valueToCheck;
-
-            Colliding = result;
-            if (Colliding)
+            if (collider is Circle)
             {
-                // event 1
-                CollisionEvent args = new CollisionEvent();
-                args.Colliding = true;
-                args.Entity1 = a.Owner.Owner;
-                args.Entity2 = b.Owner.Owner;
+                Circle a = this;
+                Circle b = ((Circle) collider);
+                float r = b._radius + a._radius;
+                r *= r;
+                float valueToCheck = ((b.Particle.Position.X - a.Particle.Position.X) *
+                                      (b.Particle.Position.X - a.Particle.Position.X)) +
+                                     ((b.Particle.Position.Y - a.Particle.Position.Y)) *
+                                     ((b.Particle.Position.Y - a.Particle.Position.Y));
 
-                a.OnCollision(this, args);
-                b.OnCollision(this, args);
+                bool result = r >= valueToCheck;
 
+                Colliding = result;
+                if (Colliding)
+                {
+                    // event 1
+                    CollisionEvent args = new CollisionEvent();
+                    args.Colliding = true;
+                    args.Entity1 = a.Owner.Owner;
+                    args.Entity2 = b.Owner.Owner;
+
+                    a.OnCollision(this, args);
+                    b.OnCollision(this, args);
+
+                }
+
+                return result;
             }
-            return result;
+
+            if(collider is Polygon)
+            {
+                var polygon = (Polygon) collider;
+                return PhysicsWorld.CircleLineIntersection(this, polygon.TopLeft, polygon.TopRight) ||
+                       PhysicsWorld.CircleLineIntersection(this, polygon.TopRight, polygon.BottomRight) ||
+                       PhysicsWorld.CircleLineIntersection(this, polygon.BottomRight, polygon.BottomLeft) ||
+                       PhysicsWorld.CircleLineIntersection(this, polygon.BottomLeft, polygon.TopLeft);
+            }
+
+            return false;
 
         }
 

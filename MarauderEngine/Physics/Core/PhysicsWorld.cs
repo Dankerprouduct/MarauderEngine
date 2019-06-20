@@ -243,6 +243,42 @@ namespace MarauderEngine.Physics.Core
             }
         }
 
+        public static bool CircleLineIntersection(Circle circle, Vector2 vA, Vector2 vB)
+        {
+            Vector2 d = vB - vA;
+            Vector2 f = vA - circle.Center;
+
+            float a = Vector2.Dot(d, d);
+            float b = 2 * Vector2.Dot(f, d);
+            float c = Vector2.Dot(f, f) - circle.GetRadius() * circle.GetRadius();
+
+            float discriminant = b * b - 4 * a * c;
+
+            if (discriminant < 0)
+            {
+                // no intersection
+                return false;
+            }
+            else
+            {
+                discriminant = (float)Math.Sqrt(discriminant);
+
+                float t1 = (-b - discriminant) / (2 * a);
+                float t2 = (-b + discriminant) / (2 * b);
+
+                if (t1 >= 0 && t1 <= 1)
+                {
+                    return true;
+                }
+                if (t2 >= 0 && t2 <= 1)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public void CheckCollision(ICollider collider)
         {
             foreach (var otherCollider in _collidersInArea)

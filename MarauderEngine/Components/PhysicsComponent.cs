@@ -90,7 +90,7 @@ namespace MarauderEngine.Components
         }
 
         /// <summary>
-        /// On a scale from 0 - 1
+        /// On a ZoomScale from 0 - 1
         /// </summary>
         /// <param name="dampening"></param>
         public void SetDampening(float dampening)

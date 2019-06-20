@@ -19,7 +19,7 @@ namespace MarauderEngine.Core
         Viewport viewPort;
         public Vector2 center;
         public Vector2 lerpedCenter;
-        float scale = 1f;
+        public float ZoomScale = 1f;
         private float _minScale = .0001f;
         private float _maxScale = 4;
 
@@ -63,11 +63,11 @@ namespace MarauderEngine.Core
                 {
                     if (!CamControl)
                     {
-                        scale += .025f;
+                        ZoomScale += .025f;
                     }
                     else
                     {
-                        scale += _zoomSpeed;
+                        ZoomScale += _zoomSpeed;
                     }
                 }
 
@@ -75,23 +75,23 @@ namespace MarauderEngine.Core
                 {
                     if (!CamControl)
                     {
-                        scale -= .025f;
+                        ZoomScale -= .025f;
                     }
                     else
                     {
-                        scale -= _zoomSpeed;
+                        ZoomScale -= _zoomSpeed;
                     }
                 }
             }
             // Tree tree = new Tree(Vector2.Zero, 0, 0);
 
-            if (scale > _maxScale)
+            if (ZoomScale > _maxScale)
             {
-                scale = _maxScale;
+                ZoomScale = _maxScale;
             }
-            if (scale <= _minScale)
+            if (ZoomScale <= _minScale)
             {
-                scale = _minScale;
+                ZoomScale = _minScale;
             }
 
 
@@ -152,7 +152,7 @@ namespace MarauderEngine.Core
 
 
             transform = Matrix.CreateTranslation(new Vector3(-lerpedCenter.X, -lerpedCenter.Y, 0)) *
-                Matrix.CreateScale(new Vector3(scale, scale, 1)) *
+                Matrix.CreateScale(new Vector3(ZoomScale, ZoomScale, 1)) *
                 Matrix.CreateTranslation(new Vector3(viewPort.Width * 0.5f, viewPort.Height * 0.5f, 0));
 
             oldMouseState = mouseState;
@@ -176,7 +176,7 @@ namespace MarauderEngine.Core
             _topRight = CellSpacePartition.GetTopRightPartition(TopRightPosition);
             _bottomLeft = CellSpacePartition.GetBottomLeftPartition(BottomLeftPosition);
             _bottomRight = CellSpacePartition.GetBottomRightPartition(BottomRightPosition);
-
+            
 
         }
 
@@ -222,7 +222,7 @@ namespace MarauderEngine.Core
 
         public void SetZoom(float zoom = 1)
         {
-            scale = zoom;
+            ZoomScale = zoom;
         }
 
         public void SetZoomSpeed(float zoomSpeed = .0005f)
@@ -259,7 +259,7 @@ namespace MarauderEngine.Core
         {
             // Scale for camera bounds that vary from window
             // Also, must adjust for translation if camera isn't at 0, 0 in screen space (such as a mini-map)
-            return (scale * windowPosition) + center;
+            return (ZoomScale * windowPosition) + center;
         }
 
     }

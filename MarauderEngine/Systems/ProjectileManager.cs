@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MarauderEngine.Systems
 {
+    [Obsolete("remnants of the game Space Marauders ... God bless her soul.")]
     public static class ProjectileManager
     {
 
@@ -23,7 +24,7 @@ namespace MarauderEngine.Systems
         {
             projectile.GetComponent<PhysicsComponent>().CollisionCircle.OldPartitionIndex =
                 projectile.GetCenterPartition(); 
-            World.World.Instance.AddDynamicEntity(projectile);
+            //World.World.Instance.AddDynamicEntity(projectile);
             projectiles.Add(projectile);
             Console.WriteLine("Added projectile: " + projectile.GetType());
             Debug.Log($"Projectiles: {projectiles.Count}", Debug.LogType.Info, 3);

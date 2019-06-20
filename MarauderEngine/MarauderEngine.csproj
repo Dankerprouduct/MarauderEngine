@@ -118,6 +118,7 @@
     <Compile Include="Physics\Core\PhysicsWorld.cs" />
     <Compile Include="Physics\Core\Raycast.cs" />
     <Compile Include="Physics\Core\Shapes\Circle.cs" />
+    <Compile Include="Physics\Core\Shapes\Polygon.cs" />
     <Compile Include="Physics\Core\SpatialPartition\CellSpacePartition.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

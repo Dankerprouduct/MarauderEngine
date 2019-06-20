@@ -14,10 +14,11 @@ namespace MarauderEngine.Core
         public static Scene CurrentScene;
 
         List<Scene> _scenes = new List<Scene>();
-
-        public SceneManagement()
+        public static GraphicsDevice GraphicsDevice; 
+        public SceneManagement(GraphicsDevice graphicsDevice)
         {
-
+            GraphicsDevice = graphicsDevice;
+            EntityTagSystem.Instance = new EntityTagSystem();
         }
 
         public override void Initialize()
@@ -47,7 +48,9 @@ namespace MarauderEngine.Core
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            CurrentScene.Draw(spriteBatch);
+            CellSpacePartition.DrawnEntities = 0;
+
+            CurrentScene.DrawScene(spriteBatch);
         }
 
     }

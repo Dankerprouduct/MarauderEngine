@@ -15,7 +15,7 @@ namespace MarauderEngine.Entity.Body
 
         public Head(int textureID, Vector2 offset) :base(textureID, offset)
         {
-            //scale = 100; 
+            //ZoomScale = 100; 
         }
 
         public override void Update(Vector2 center, float rotation)

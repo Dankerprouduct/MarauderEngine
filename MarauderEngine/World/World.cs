@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using MarauderEngine.Components;
 using MarauderEngine.Core;
@@ -12,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MarauderEngine.World
 {
+    [Obsolete("use a Scene instead.", true)]
     public class World
     {
 

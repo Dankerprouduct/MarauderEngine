@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using MarauderEngine.Components;
+using MarauderEngine.Core;
 using MarauderEngine.Utilities;
 using MarauderEngine.World;
 using Microsoft.Xna.Framework;
@@ -158,7 +159,7 @@ namespace MarauderEngine.Entity
         /// <returns></returns>
         public int GetCurrentDynamicPartition()
         {
-            return World.World.Instance.cellSpacePartition.PositionToIndex(this); 
+            return SceneManagement.CurrentScene.CellSpacePartition.PositionToIndex(this); 
         }
 
         /// <summary>
@@ -287,7 +288,7 @@ namespace MarauderEngine.Entity
             cellIndex = GetCenterPartition();
             if (cellIndex != oldCellIndex)
             {
-                World.World.Instance.cellSpacePartition.ChangeCell(this);
+                SceneManagement.CurrentScene.CellSpacePartition.ChangeCell(this);
                 cellIndex = GetCenterPartition();
                 SetCellIndex(cellIndex);
                 oldCellIndex = cellIndex;

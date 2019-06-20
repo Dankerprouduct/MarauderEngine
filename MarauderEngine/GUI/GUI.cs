@@ -96,14 +96,14 @@ namespace MarauderEngine.GUI
 
         public static void DrawBox(Rectangle rect, Color color)
         {
-            //guiObject.Add(new GUIObject(new Rectangle(x, y, w, h), color));
-            spriteBatch.Draw(TextureManager.Gui[0], rect, color);
+            //guiObject.Add(new GUIObject(new Polygon(x, y, w, h), color));
+            spriteBatch.Draw(TextureManager.Gui[0], rect, null, color, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
         }
 
         public static void DrawBox(int x, int y, int w, int h, Color color)
         {
-            //guiObject.Add(new GUIObject(new Rectangle(x, y, w, h), color));
+            //guiObject.Add(new GUIObject(new Polygon(x, y, w, h), color));
             spriteBatch.Draw(TextureManager.Gui[0], new Rectangle(x, y, w, h), color);
 
         }

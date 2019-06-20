@@ -29,7 +29,7 @@ namespace MarauderEngine.Components
         {
             if (eEvent.id == "RayHit")
             {
-                //Console.WriteLine("Rectangle " + rectangle + " " + (Point)_event.parameters["Ray"]);
+                //Console.WriteLine("Polygon " + rectangle + " " + (Point)_event.parameters["Ray"]);
                 //Console.WriteLine("ray " + rectangle.Contains((Point)_event.parameters["Ray"]));
                 bool hit = _rectangle.Contains((Point)eEvent.parameters["Ray"]);
 

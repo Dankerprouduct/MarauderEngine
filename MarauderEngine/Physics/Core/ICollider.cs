@@ -20,6 +20,8 @@ namespace MarauderEngine.Physics.Core
 
         IComponent Owner { get; set; }
 
+        event EventHandler<CollisionEvent> CollidedWithEntity;
+
         bool Intersects(ICollider other);
         
         bool Intersects(Point other);

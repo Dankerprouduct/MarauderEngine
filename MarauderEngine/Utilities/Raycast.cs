@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MarauderEngine.Components;
+using MarauderEngine.Core;
 using Microsoft.Xna.Framework;
 
 namespace MarauderEngine.Utilities
@@ -81,7 +82,7 @@ namespace MarauderEngine.Utilities
 
                 points.Add(rayPoint);
                 //Game1.world.FireGlobal()
-                if (Game1.world.FireGlobalEvent(rayEvent, entity))
+                if (SceneManagement.CurrentScene.FireGlobalEvent(rayEvent, entity))
                 {
                     //Console.WriteLine("hit " + rayPoint  + " "+ Game1.world.FireGlobalEvent(rayEvent, entity));
                     hit = rayPoint;
@@ -122,7 +123,7 @@ namespace MarauderEngine.Utilities
 
                 points.Add(rayPoint);
                 //Game1.world.FireGlobal()
-                if (Game1.world.FireGlobalEvent(rayEvent, entity))
+                if (SceneManagement.CurrentScene.FireGlobalEvent(rayEvent, entity))
                 {
                     //Console.WriteLine("hit " + rayPoint  + " "+ Game1.world.FireGlobalEvent(rayEvent, entity));
                     hit = rayPoint;
@@ -164,7 +165,7 @@ namespace MarauderEngine.Utilities
 
                 points.Add(rayPoint);
                 //Game1.world.FireGlobal()
-                if (Game1.world.FireGlobalEvent(rayEvent, entity))
+                if (SceneManagement.CurrentScene.FireGlobalEvent(rayEvent, entity))
                 {
                     //Console.WriteLine("hit " + rayPoint  + " "+ Game1.world.FireGlobalEvent(rayEvent, entity));
                     hit = rayPoint;

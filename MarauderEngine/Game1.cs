@@ -27,7 +27,7 @@ namespace MarauderEngine
 
         public static Camera camera;
 
-        public static World.World world;
+        //public static World.World world;
 
         public static int width = 1280;
         public static int height = 0; 
@@ -66,6 +66,8 @@ namespace MarauderEngine
             graphics.IsFullScreen = false;
             this.graphics.SynchronizeWithVerticalRetrace = true;
             this.IsFixedTimeStep = true; 
+
+           
         }
         
         protected override void Initialize()
@@ -100,8 +102,7 @@ namespace MarauderEngine
         public void Reset()
         {
 
-
-            world = new World.World(10, 10); 
+            //world = new World.World(10, 10); 
             //world.AddDynamicEntity(player);
             camera = new Camera(GraphicsDevice.Viewport);
             
@@ -143,7 +144,7 @@ namespace MarauderEngine
 
             if (!Debug.Console.showDebug)
             {
-                world.Update(gameTime);
+                SceneManagement.CurrentScene.Update(gameTime);
                                
             }
             ProjectileManager.Update(gameTime);
@@ -226,13 +227,13 @@ namespace MarauderEngine
             // Background
             GraphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin();
-            world.DrawBackground(spriteBatch);
+           // world.DrawBackground(spriteBatch);
             spriteBatch.End();
 
             // player space
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.transform);
             GUI.GUI.Draw(spriteBatch);
-            world.Draw(spriteBatch);
+            //world.Draw(spriteBatch);
 
             ProjectileManager.Draw(spriteBatch);
 

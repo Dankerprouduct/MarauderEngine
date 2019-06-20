@@ -15,7 +15,7 @@ namespace MarauderEngine.Core
         private SpriteBatch spriteBatch;
         public MarauderComponent(Game game) : base(game)
         {
-            SceneManagement = new SceneManagement();
+            //SceneManagement = new SceneManagement();
             spriteBatch = (SpriteBatch) game.Services.GetService(typeof(SpriteBatch));
         }
 

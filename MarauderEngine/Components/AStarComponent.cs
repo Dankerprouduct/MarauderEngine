@@ -167,13 +167,14 @@ namespace MarauderEngine.Components
             }
             else
             {
+                StartPathThread(target);
 
-                _pathingThread = new Thread(() => StartPathThread(target));
-                if (!_pathingThread.IsAlive)
-                {
-                    _pathingThread.Start();
-                }
-                _pathingThread.Join();
+                //_pathingThread = new Thread(() =>);
+                //if (!_pathingThread.IsAlive)
+                //{
+                //    _pathingThread.Start();
+                //}
+                //_pathingThread.Join();
             }
 
         }
@@ -184,21 +185,26 @@ namespace MarauderEngine.Components
         /// <param name="target"></param>
         private void StartPathThread(Vector2 target)
         {
-
-            _isPathing = false;
-            // Start Node
-            Node startNode = new Node(new Point((int)Owner.GetComponent<TransformComponent>().Position.X / 128, (int)Owner.GetComponent<TransformComponent>().Position.Y / 128));
-            startNode.arrayPosition = new Point((int)Owner.GetComponent<TransformComponent>().Position.X / 128, (int)Owner.GetComponent<TransformComponent>().Position.Y / 128);
-
-
-            // Goal Node
-            _pathingGoal = new Point((int)target.X / 128, (int)target.Y / 128);
-            Node goalNode = new Node(new Point((int)_pathingGoal.X, (int)_pathingGoal.Y));
-            goalNode.arrayPosition = _pathingGoal;
+            Task pathTask = new Task(() =>
+            {
+                _isPathing = false;
+                // Start Node
+                Node startNode = new Node(new Point((int) Owner.GetComponent<TransformComponent>().Position.X / 128,
+                    (int) Owner.GetComponent<TransformComponent>().Position.Y / 128));
+                startNode.arrayPosition = new Point((int) Owner.GetComponent<TransformComponent>().Position.X / 128,
+                    (int) Owner.GetComponent<TransformComponent>().Position.Y / 128);
 
 
-            _pathingNode = _pathfinding.FindPath(startNode, goalNode);
+                // Goal Node
+                _pathingGoal = new Point((int) target.X / 128, (int) target.Y / 128);
+                Node goalNode = new Node(new Point((int) _pathingGoal.X, (int) _pathingGoal.Y));
+                goalNode.arrayPosition = _pathingGoal;
 
+
+                _pathingNode = _pathfinding.FindPath(startNode, goalNode);
+            });
+
+            pathTask.Start();
         }
 
         /// <summary>

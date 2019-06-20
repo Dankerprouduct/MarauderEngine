@@ -19,20 +19,26 @@ namespace MarauderEngine.Core
 
         // update queue for cell space partition 
         List<int> _partitionsToUpdate = new List<int>();
-
         /// <summary>
         /// Set this to true if you want to manually update partitions instead of allowing the scene to control it 
         /// </summary>
         public bool ManuallyUpdateScene { get; set; }
 
+        private RenderTarget2D _scene; 
         public Scene(int width, int height)
         {
             PhysicsWorld = new PhysicsWorld(width, height,4);
             CellSpacePartition = new CellSpacePartition(width, height);
             ManuallyUpdateScene = false;
+            _scene = new RenderTarget2D(SceneManagement.GraphicsDevice,
+                SceneManagement.GraphicsDevice.PresentationParameters.BackBufferWidth,
+                SceneManagement.GraphicsDevice.PresentationParameters.BackBufferHeight,
+                false,
+                SceneManagement.GraphicsDevice.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24);
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             if (!ManuallyUpdateScene)
             {
@@ -44,7 +50,7 @@ namespace MarauderEngine.Core
         /// Adds entity to dynamic cell partition
         /// </summary>
         /// <param name="entity"></param>
-        public void AddDynamicEntity(MarauderEngine.Entity.Entity entity)
+        public virtual void AddDynamicEntity(MarauderEngine.Entity.Entity entity)
         {
             CellSpacePartition.AddDynamicEntity(entity);
         }
@@ -53,7 +59,7 @@ namespace MarauderEngine.Core
         /// Adds entity to the static cell partition
         /// </summary>
         /// <param name="entity"></param>
-        public void AddStaticEntity(Entity.Entity entity)
+        public virtual void AddStaticEntity(Entity.Entity entity)
         {
             CellSpacePartition.AddStaticEntity(entity);
         }
@@ -135,13 +141,50 @@ namespace MarauderEngine.Core
             }
         }
 
+        /// <summary>
+        /// returns list of loaded partitions
+        /// </summary>
+        /// <returns></returns>
         public List<int> GetPartitionsLoaded()
         {
             return _partitionsToUpdate;
         }
 
+        public bool EntityWithinBounds(int checkedCell)
+        {
+            if (checkedCell >= 0 && checkedCell < CellSpacePartition.cellLength)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            //spriteBatch.Draw(_scene, Vector2.Zero, Color.White);
+            DrawDynamicCellPartition(spriteBatch);
+        }
+        
+
+        [Obsolete("use Draw for now.")]
+        public void DrawScene(SpriteBatch spriteBatch)
+        {
+            SceneManagement.GraphicsDevice.SetRenderTarget(_scene);
+            
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null,
+                null,
+                null, Camera.Instance.transform);
+
+            DrawDynamicCellPartition(spriteBatch);
+
+            spriteBatch.End();
+
+            SceneManagement.GraphicsDevice.SetRenderTarget(null);
+        }
+
         private void DrawDynamicCellPartition(SpriteBatch spriteBatch)
         {
+            
             for (int x = Camera.Instance.GetTopLeftCell(); x <= Camera.Instance.GetTopRightCell(); x += 150)
             {
                 int yy = 0;
@@ -176,21 +219,7 @@ namespace MarauderEngine.Core
 
 
         }
-
-        public bool EntityWithinBounds(int checkedCell)
-        {
-            if (checkedCell >= 0 && checkedCell < CellSpacePartition.cellLength)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            DrawDynamicCellPartition(spriteBatch);
-        }
-
+        
         public bool FireGlobalEvent(Event _event, MarauderEngine.Entity.Entity entity)
         {
             return false;

@@ -9,6 +9,7 @@ namespace MarauderEngine.Systems
 {
     public class CellSpacePartition
     {
+        public static int DrawnEntities = 0;
         public struct DynamicCell
         {
             public List<MarauderEngine.Entity.Entity> members; 
@@ -78,7 +79,15 @@ namespace MarauderEngine.Systems
                     {
                         if (members[i].active)
                         {
-                            members[i].Draw(spriteBatch);
+                            var position = members[i].GetComponent<TransformComponent>().Position;
+                            if (position.X + 256 >= Camera.Instance.TopLeftPosition.X &&
+                                position.X - 256 <= Camera.Instance.TopRightPosition.X &&
+                                position.Y - 256 <= Camera.Instance.BottomLeftPosition.Y &&
+                                position.Y + 256 >= Camera.Instance.TopLeftPosition.Y)
+                            {
+                                members[i].Draw(spriteBatch);
+                                DrawnEntities++;
+                            }
                         }
                     }
                 }
@@ -206,7 +215,15 @@ namespace MarauderEngine.Systems
                         {
                             if (members[x, y] != null)
                             {
-                                members[x, y].Draw(spriteBatch);
+                                var position = members[x,y].GetComponent<TransformComponent>().Position;
+                                if (position.X + 256 >= Camera.Instance.TopLeftPosition.X &&
+                                    position.X - 256 <= Camera.Instance.TopRightPosition.X &&
+                                    position.Y - 256 <= Camera.Instance.BottomLeftPosition.Y &&
+                                    position.Y + 256 >= Camera.Instance.TopLeftPosition.Y)
+                                {
+                                    members[x,y].Draw(spriteBatch);
+                                    DrawnEntities++;
+                                }
                             }
                         }
                     }
@@ -408,7 +425,7 @@ namespace MarauderEngine.Systems
 
         public static  int GetCurrentDynamicPartition(Vector2 position)
         {
-            return World.World.Instance.cellSpacePartition.PositionToIndex(position);
+            return SceneManagement.CurrentScene.CellSpacePartition.PositionToIndex(position);
         }
 
         /// <summary>
