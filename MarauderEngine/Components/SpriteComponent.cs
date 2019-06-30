@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MarauderEngine.Components.Data;
 using MarauderEngine.Core.Render;
 using MarauderEngine.Graphics;
 using Microsoft.Xna.Framework;
@@ -11,32 +12,63 @@ using MathHelper = MarauderEngine.Utilities.MathHelper;
 
 namespace MarauderEngine.Components
 {
-    public class SpriteComponent : IComponent, IComparable<SpriteComponent>
+    public class SpriteComponent : Component<SpriteCData>, IComparable<SpriteComponent>
     {
-        public Entity.Entity Owner { get; set; }
-        public string Name { get; set; }
-        public bool Active { get; set; }
 
-        private string _textureName; 
 
-        public Vector2 TextureCenter { get; set; }
-        public float SpriteScale { get; set; }
+        public string TextureName
+        {
+            get => _data.TextureName;
+            set => _data.TextureName = value; 
+        }
 
-        public float Layer = 0;
+        public Vector2 TextureCenter
+        {
+            get => _data.TextureCenter;
+            set => _data.TextureCenter = value;
+        }
 
-        public float Rotation { get; set; }
+        public float SpriteScale
+        {
+            get => _data.SpriteScale;
+            set => _data.SpriteScale = value;
+        }
 
-        public bool StupidDrawing = false; 
+        public float Layer
+        {
+            get => _data.Layer;
+            set => _data.Layer = value;
+        }
+
+        public float Rotation
+        {
+            get => _data.Rotation;
+            set => _data.Rotation = value;
+        }
+
+        public bool StupidDrawing
+        {
+            get => _data.StupidDrawing;
+            set => _data.StupidDrawing = value;
+        }
 
         /// <summary>
         /// the tint of the sprite. Defaults to white
         /// </summary>
-        public Color Color;
+        public Color Color
+        {
+            get => _data.Color;
+            set => _data.Color = value;
+        }
 
         /// <summary>
         /// a value between 0 and 1 that fades a color
         /// </summary>
-        public float ColorMod;
+        public float ColorMod
+        {
+            get => _data.ColorMod;
+            set => _data.ColorMod = value;
+        }
 
 
         public Rectangle Rectangle
@@ -47,9 +79,10 @@ namespace MarauderEngine.Components
                     Owner.GetComponent<TransformComponent>().Position.ToPoint().X - (int)TextureCenter.X,
                     Owner.GetComponent<TransformComponent>().Position.ToPoint().Y - (int)TextureCenter.Y),
                     new Point(
-                        TextureManager.GetContent<Texture2D>(_textureName).Width,
-                        TextureManager.GetContent<Texture2D>(_textureName).Height));
+                        TextureManager.GetContent<Texture2D>(TextureName).Width,
+                        TextureManager.GetContent<Texture2D>(TextureName).Height));
             }
+            set => throw new NotImplementedException();
         }
 
         /// <summary>
@@ -61,33 +94,24 @@ namespace MarauderEngine.Components
         public SpriteComponent(Entity.Entity owner, string textureName)
         {
             RegisterComponent(owner, "SpriteComponent");
-            _textureName = textureName; 
+            TextureName = textureName; 
             SetTextureName(textureName);
             SpriteScale = 1;
             Color = Color.White;
             ColorMod = 1; 
         }
 
-
-        public void RegisterComponent(Entity.Entity entity, string componentName)
-        {
-            Owner = entity;
-            Name = componentName;
-            Active = true; 
-            //BatchManager.Instance.AddSpriteComponent(this);
-        }
-
-        public bool FireEvent(Event eEvent)
+        public override bool FireEvent(Event eEvent)
         {
             return false;
         }
 
-        public void UpdateComponent()
+        public override void UpdateComponent()
         {
             Rotation = Owner.GetComponent<TransformComponent>().Rotation;
         }
 
-        public void Destroy()
+        public override void Destroy()
         {
             Active = false; 
         }
@@ -99,7 +123,7 @@ namespace MarauderEngine.Components
         public void SetTextureName(string textureName)
         {
 
-            _textureName = textureName;
+            TextureName = textureName;
             TextureCenter = MathHelper.CenterOfImage(TextureManager.GetContent<Texture2D>(textureName)); 
         }
 
@@ -109,24 +133,24 @@ namespace MarauderEngine.Components
         /// <returns></returns>
         public string GetTextureName()
         {
-            return _textureName; 
+            return TextureName; 
         }
         
         public void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(TextureManager.GetContent<Texture2D>(_textureName), Owner.GetComponent<TransformComponent>().Position, Color.White);
+            //spriteBatch.Draw(TextureManager.GetContent<Texture2D>(TextureName), Owner.GetComponent<TransformComponent>().Position, Color.White);
             if (Active)
             {
                 if (!StupidDrawing)
                 {
-                    spriteBatch.Draw(TextureManager.GetContent<Texture2D>(_textureName),
+                    spriteBatch.Draw(TextureManager.GetContent<Texture2D>(TextureName),
                         Owner.GetComponent<TransformComponent>().Position, null, Color * ColorMod,
                         Rotation, TextureCenter, SpriteScale, SpriteEffects.None,
                         Layer);
                 }
                 else
                 {
-                    spriteBatch.Draw(TextureManager.GetContent<Texture2D>(_textureName),
+                    spriteBatch.Draw(TextureManager.GetContent<Texture2D>(TextureName),
                         Owner.GetComponent<TransformComponent>().Position, null, Color * ColorMod,
                         0, new Vector2(0,0), SpriteScale, SpriteEffects.None,
                         Layer);

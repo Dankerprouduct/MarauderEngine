@@ -1,4 +1,6 @@
-﻿namespace MarauderEngine.Components
+﻿using MarauderEngine.Components.Data;
+
+namespace MarauderEngine.Components
 {
     public  interface IComponent
     {
@@ -7,6 +9,11 @@
         /// </summary>
         MarauderEngine.Entity.Entity Owner { get; set; }
         string Name { get; set; }
+
+        /// <summary>
+        /// The data for this
+        /// </summary>
+        //ComponentData<T> Data { get; }
 
         /// <summary>
         /// Whether or not this component is being updated

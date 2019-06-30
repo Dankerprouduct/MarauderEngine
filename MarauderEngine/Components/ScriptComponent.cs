@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MarauderEngine.Components.Data;
 using NLua;
 using MarauderEngine.Core;
 
 namespace MarauderEngine.Components
 {
-    public class ScriptComponent: IComponent
+    public class ScriptComponent: Component<ScriptCData>
     {
-        public Entity.Entity Owner { get; set; }
-        public string Name { get; set; }
-        public bool Active { get; set; }
+        public string ScriptName
+        {
+            get => _data.ScriptName;
+            set => _data.ScriptName = value;
+        }
 
         private Lua state;
 
@@ -22,9 +25,10 @@ namespace MarauderEngine.Components
 
         public ScriptComponent(Entity.Entity entity, string path,  string scriptName)
         {
+            ScriptName = scriptName;
             RegisterComponent(entity, "ScriptComponent");
             state = new Lua();
-            state.DoFile(path + @"\" +scriptName + ".lua");
+            state.DoFile(path + @"\" + ScriptName + ".lua");
 
             //state.LoadCLRPackage();
             state["Owner"] = Owner; 
@@ -36,25 +40,20 @@ namespace MarauderEngine.Components
             _initFunction.Call();
         }
 
-        public void RegisterComponent(Entity.Entity entity, string componentName)
-        {
-            Owner = entity;
-            Name = componentName; 
-        }
 
-        public bool FireEvent(Event eEvent)
+        public override bool FireEvent(Event eEvent)
         {
             return false; 
         }
         
-        public void UpdateComponent()
+        public override void UpdateComponent()
         {
             
             _updateFunction.Call();
 
         }
 
-        public void Destroy()
+        public override void Destroy()
         {
             _destroyFunction.Call(); 
         }

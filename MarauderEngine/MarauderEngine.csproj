@@ -69,6 +69,16 @@
     <Compile Include="Audio\Voice.cs" />
     <Compile Include="Components\AStarComponent.cs" />
     <Compile Include="Components\BodyComponent.cs" />
+    <Compile Include="Components\Component.cs" />
+    <Compile Include="Components\Data\AStarCData.cs" />
+    <Compile Include="Components\Data\ComponentData.cs" />
+    <Compile Include="Components\Data\PhysicsCData.cs" />
+    <Compile Include="Components\Data\ScriptCData.cs" />
+    <Compile Include="Components\Data\SolidCData.cs" />
+    <Compile Include="Components\Data\SpriteCData.cs" />
+    <Compile Include="Components\Data\TagCData.cs" />
+    <Compile Include="Components\Data\TransformCData.cs" />
+    <Compile Include="Components\Data\TriggerColliderCData.cs" />
     <Compile Include="Components\Event.cs" />
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\InputComponent.cs" />

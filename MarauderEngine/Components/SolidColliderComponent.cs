@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MarauderEngine.Components.Data;
 using MarauderEngine.Entity;
 using MarauderEngine.Physics.Core;
 using MarauderEngine.Physics.Core.Shapes;
@@ -7,11 +8,8 @@ using Microsoft.Xna.Framework;
 
 namespace MarauderEngine.Components
 {
-    public class SolidColliderComponent: IComponent
+    public class SolidColliderComponent: Component<SolidCData>
     {
-        public MarauderEngine.Entity.Entity Owner { get; set; }
-        public string Name { get; set; }
-        public bool Active { get; set; }
 
         public Rectangle Rectangle;
         public Circle CollisionCircle; 
@@ -61,14 +59,8 @@ namespace MarauderEngine.Components
 
         }
 
-        public void RegisterComponent(MarauderEngine.Entity.Entity entity, string componentName)
-        {
-            Owner = entity; 
-            Name = componentName;
-            Active = true; 
-        }
 
-        public bool FireEvent(Event eEvent)
+        public override bool FireEvent(Event eEvent)
         {
             if (eEvent.id == "Collider")
             {
@@ -88,12 +80,12 @@ namespace MarauderEngine.Components
             return false;
         }
 
-        public void UpdateComponent()
+        public override void UpdateComponent()
         {
 
         }
 
-        public void Destroy()
+        public override void Destroy()
         {
             
         }

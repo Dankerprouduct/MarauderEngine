@@ -25,6 +25,7 @@ namespace MarauderEngine.Core
 
         public bool CamControl = true;
         float speed = 60;
+        private float originalSpeed = 60;
         private float _zoomSpeed = .0005f;
         public static Vector2 position;
         private MarauderEngine.Entity.Entity focusedEntity;
@@ -126,11 +127,11 @@ namespace MarauderEngine.Core
                 }
                 if (keyboardState.IsKeyDown(Keys.LeftShift))
                 {
-                    speed = 240;
+                    speed = (originalSpeed * 3);
                 }
                 else
                 {
-                    speed = 60;
+                    speed = originalSpeed;
                 }
             }
             else
@@ -238,6 +239,7 @@ namespace MarauderEngine.Core
         public void SetMoveSpeed(float speed = 60)
         {
             this.speed = speed;
+            originalSpeed = speed; 
         }
 
         /// <summary>

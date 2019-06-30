@@ -4,17 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MarauderEngine.Components.Data;
 using MarauderEngine.World;
 using Microsoft.Xna.Framework;
 using MathHelper = MarauderEngine.Utilities.MathHelper;
 
 namespace MarauderEngine.Components
 {
-    public class AStarComponent : IComponent
+    public class AStarComponent : Component<AStarCData>
     {
-        public Entity.Entity Owner { get; set; }
-        public string Name { get; set; }
-        public bool Active { get; set; }
 
         private Vector2 _currentPathingTarget;
         private List<Node> _pathingNode;
@@ -26,7 +24,11 @@ namespace MarauderEngine.Components
         /// <summary>
         /// the distance at which the entity will stop pathfinding and move straight towards the target
         /// </summary>
-        public float IgnoreDistance = 128;
+        public float IgnoreDistance
+        {
+            get => _data.IgnoreDistance;
+            set => _data.IgnoreDistance = value;
+        }
 
         /// <summary>
         /// Used for entity pathfining
@@ -36,19 +38,11 @@ namespace MarauderEngine.Components
         public AStarComponent(Entity.Entity owner)
         {
             RegisterComponent(owner, "AStarComponent");
-        }
-
-
-        public void RegisterComponent(Entity.Entity entity, string componentName)
-        {
-            Owner = entity;
-            Name = componentName;
-            Active = true;
-
             _pathfinding = new Pathfinding();
         }
 
-        public bool FireEvent(Event eEvent)
+
+        public override bool FireEvent(Event eEvent)
         {
 
             if (eEvent.id == "FindPath")
@@ -59,7 +53,7 @@ namespace MarauderEngine.Components
             return false;
         }
 
-        public void UpdateComponent()
+        public override void UpdateComponent()
         {
 
         }
@@ -223,7 +217,7 @@ namespace MarauderEngine.Components
             _pathfinding.DrawSets();
         }
 
-        public void Destroy()
+        public override void Destroy()
         {
 
         }

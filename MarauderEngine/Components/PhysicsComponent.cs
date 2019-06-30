@@ -1,4 +1,5 @@
 ﻿using System;
+using MarauderEngine.Components.Data;
 using MarauderEngine.Core;
 using MarauderEngine.Physics.Core;
 using Microsoft.Xna.Framework;
@@ -6,12 +7,8 @@ using Circle = MarauderEngine.Physics.Core.Shapes.Circle;
 
 namespace MarauderEngine.Components
 {
-    public class PhysicsComponent : IComponent
+    public class PhysicsComponent : Component<PhysicsCData>
     {
-        public MarauderEngine.Entity.Entity Owner { get; set; }
-        public string Name { get; set; }
-        public bool Active { get; set; }
-
         private Vector2 _position;
         
         public Circle CollisionCircle;
@@ -40,13 +37,6 @@ namespace MarauderEngine.Components
             CollidedWithEntity?.Invoke(this, e);
         }
 
-        public void RegisterComponent(MarauderEngine.Entity.Entity entity, string componentName)
-        {
-            Owner = entity;
-            Name = componentName;
-            Active = true; 
-        }
-
         /// <summary>
         /// Adds physics body to PhysicsSystem
         /// </summary>
@@ -63,7 +53,7 @@ namespace MarauderEngine.Components
         /// </summary>
         /// <param name="eEvent"></param>a
         /// <returns></returns>
-        public bool FireEvent(Event eEvent)
+        public override bool FireEvent(Event eEvent)
         {
             if (eEvent.id == "AddVelocity")
             {
@@ -75,7 +65,7 @@ namespace MarauderEngine.Components
             return false;
         }
 
-        public void UpdateComponent()
+        public override void UpdateComponent()
         {
             //_position = body.Position;
             Owner.GetComponent<TransformComponent>().Position = CollisionCircle.Particle.Position; 
@@ -108,7 +98,7 @@ namespace MarauderEngine.Components
         }
 
 
-        public void Destroy()
+        public override void Destroy()
         {
             //Debug.Log("Destroying collider", Debug.LogType.Error, 5);
             //CollisionCircle.DestroyCollider();

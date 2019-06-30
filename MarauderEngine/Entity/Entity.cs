@@ -24,6 +24,9 @@ namespace MarauderEngine.Entity
         public int cellIndex; // holds current cell
         public int oldCellIndex;
 
+        public Entity Parent { get; set; }
+        public List<Entity> Children = new List<Entity>();
+
         /// <summary>
         /// whether or not this entity is "in play"
         /// set to false to destroy
@@ -42,7 +45,32 @@ namespace MarauderEngine.Entity
             id = nextAvailibleID;
             nextAvailibleID++;
             active = true; 
+            
+        }
 
+        public Entity(Entity parent)
+        {
+            id = nextAvailibleID;
+            nextAvailibleID++;
+            active = true;
+
+            Parent = parent;
+            Parent.Children.Add(this);
+        }
+
+        /// <summary>
+        /// Sets a parent
+        /// </summary>
+        /// <param name="parent"></param>
+        public void SetParent(Entity parent)
+        {
+            if (Parent != null)
+            {
+                Parent.Children.Remove(this);
+            }
+
+            Parent = parent; 
+            Parent.Children.Add(this);
         }
 
         /// <summary>

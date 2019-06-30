@@ -127,13 +127,13 @@ namespace MarauderEngine.Systems
                 else
                 {
                     members = new MarauderEngine.Entity.Entity[16, 16];
-                    for (int y = 0; y < members.GetLength(1); y++)
-                    {
-                        for (int x = 0; x < members.GetLength(0); x++)
-                        {
-                            members[x, y] = new MarauderEngine.Entity.Entity();
-                        }
-                    }
+                    //for (int y = 0; y < members.GetLength(1); y++)
+                    //{
+                    //    for (int x = 0; x < members.GetLength(0); x++)
+                    //    {
+                    //        members[x, y] = new MarauderEngine.Entity.Entity();
+                    //    }
+                    //}
                     x = entity.cellX;
                     y = entity.cellY;
                     AddEntity(entity);

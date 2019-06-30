@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
+using MarauderEngine.Components.Data;
 using Microsoft.Xna.Framework;
 
 namespace MarauderEngine.Components
 {
-    public class TriggerColliderComponent: IComponent
+    public class TriggerColliderComponent: Component<TriggerColliderCData>
     {
-        public MarauderEngine.Entity.Entity Owner { get; set; }
-        public string Name { get; set; }
-        public bool Active { get; set; }
-
         Rectangle _rectangle;
         bool _destroy = false;
 
@@ -17,7 +14,7 @@ namespace MarauderEngine.Components
             RegisterComponent(entity, "TriggerColliderComponent");
         }
 
-        public void RegisterComponent(MarauderEngine.Entity.Entity entity, string componentName)
+        public override void RegisterComponent(MarauderEngine.Entity.Entity entity, string componentName)
         {
             Name = componentName;
             Owner = entity;
@@ -25,7 +22,7 @@ namespace MarauderEngine.Components
             this._rectangle = Owner.collisionRectanlge;
         }
 
-        public bool FireEvent(Event eEvent)
+        public override bool FireEvent(Event eEvent)
         {
             if (eEvent.id == "RayHit")
             {
@@ -58,7 +55,7 @@ namespace MarauderEngine.Components
             return false; 
         }
 
-        public void UpdateComponent()
+        public override void UpdateComponent()
         {
             _rectangle = Owner.collisionRectanlge;
             // = entity; 
@@ -69,7 +66,7 @@ namespace MarauderEngine.Components
             }
         }
 
-        public void Destroy()
+        public override void Destroy()
         {
             
         }

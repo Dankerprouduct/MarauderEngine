@@ -3,6 +3,7 @@ using MarauderEngine.Components;
 using MarauderEngine.Core;
 using MarauderEngine.Physics.Core.SpatialPartition;
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 
 namespace MarauderEngine.Physics.Core.Shapes
 {
@@ -16,7 +17,6 @@ namespace MarauderEngine.Physics.Core.Shapes
         public bool Colliding { get; set; }
         public int Layer { get; set; }
         public IComponent Owner { get; set; }
-
 
         public event EventHandler<CollisionEvent> CollidedWithEntity;
 
@@ -92,10 +92,10 @@ namespace MarauderEngine.Physics.Core.Shapes
             if(collider is Polygon)
             {
                 var polygon = (Polygon) collider;
-                return PhysicsWorld.CircleLineIntersection(this, polygon.TopLeft, polygon.TopRight) ||
-                       PhysicsWorld.CircleLineIntersection(this, polygon.TopRight, polygon.BottomRight) ||
-                       PhysicsWorld.CircleLineIntersection(this, polygon.BottomRight, polygon.BottomLeft) ||
-                       PhysicsWorld.CircleLineIntersection(this, polygon.BottomLeft, polygon.TopLeft);
+                //return PhysicsWorld.CircleLineIntersection(this, polygon.TopLeft, polygon.TopRight) ||
+                //       PhysicsWorld.CircleLineIntersection(this, polygon.TopRight, polygon.BottomRight) ||
+                //       PhysicsWorld.CircleLineIntersection(this, polygon.BottomRight, polygon.BottomLeft) ||
+                //       PhysicsWorld.CircleLineIntersection(this, polygon.BottomLeft, polygon.TopLeft);
             }
 
             return false;

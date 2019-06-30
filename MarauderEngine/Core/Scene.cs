@@ -25,6 +25,12 @@ namespace MarauderEngine.Core
         public bool ManuallyUpdateScene { get; set; }
 
         private RenderTarget2D _scene; 
+
+        /// <summary>
+        /// It is recommended to use  602 for both the width and height
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public Scene(int width, int height)
         {
             PhysicsWorld = new PhysicsWorld(width, height,4);
@@ -43,6 +49,7 @@ namespace MarauderEngine.Core
             if (!ManuallyUpdateScene)
             {
                 PhysicsWorld.Update(gameTime);
+                UpdateDynamicCellPartition(gameTime);
             }
         }
 

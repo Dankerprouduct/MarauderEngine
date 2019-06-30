@@ -1,22 +1,34 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Runtime.CompilerServices;
+using MarauderEngine.Components.Data;
+using Microsoft.Xna.Framework;
 
 namespace MarauderEngine.Components
 {
-    public class TransformComponent: IComponent
+    public class TransformComponent: Component<TransformCData>
     {
-        public MarauderEngine.Entity.Entity Owner { get; set; }
-        public string Name { get; set; }
-        public bool Active { get; set; }
 
-        public Vector2 Position { get; set; }
+        // Implement if abstract GetType does not return child type.
+        //public override Type type => GetType();
 
-        private float _rotation = 0;
+        public Vector2 Position
+        {
+            get => _data.Position;
+            set => _data.Position = value;
+        }
+
+        private float _rotation
+        {
+            get => _data._rotation;
+            set => _data._rotation = value;
+        }
+
         /// <summary>
         /// Rotation in Radians
         /// </summary>
         public  float Rotation
         {
-            get { return _rotation; }
+            get => _rotation;
             set
             {
                 if (!float.IsNaN(value))
@@ -30,7 +42,8 @@ namespace MarauderEngine.Components
         public TransformComponent(MarauderEngine.Entity.Entity owner)
         {
             RegisterComponent(owner, "TransformComponent");
-        }
+
+        } 
 
         public TransformComponent(MarauderEngine.Entity.Entity owner, Vector2 position)
         {
@@ -38,19 +51,14 @@ namespace MarauderEngine.Components
             Position = position; 
         }
 
-        public void RegisterComponent(MarauderEngine.Entity.Entity entity, string componentName)
-        {
-            Owner = entity;
-            Name = componentName;
-            Active = true; 
-        }
+
 
         /// <summary>
         /// Fires Event to Physics Component
         /// </summary>
         /// <param name="eEvent"></param>
         /// <returns></returns>
-        public bool FireEvent(Event eEvent)
+        public override bool FireEvent(Event eEvent)
         {
 
             if (eEvent.id == "AddRotation")
@@ -68,7 +76,7 @@ namespace MarauderEngine.Components
         /// <summary>
         /// Updates Component
         /// </summary>
-        public void UpdateComponent()
+        public override void UpdateComponent()
         {
             //var physicsComponent = Owner.GetComponent<PhysicsComponent>(); //(PhysicsComponent) Owner.GetComponent("PhysicsComponent");
             
@@ -78,7 +86,7 @@ namespace MarauderEngine.Components
             //}
         }
 
-        public void Destroy()
+        public override void Destroy()
         {
 
         }
