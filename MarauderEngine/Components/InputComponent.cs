@@ -1,4 +1,5 @@
 ﻿using System;
+using MarauderEngine.Components.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -14,6 +15,7 @@ namespace MarauderEngine.Components
 
         public MarauderEngine.Entity.Entity Owner { get; set; }
         public string Name { get; set; }
+        public ComponentData Data { get; set; }
         public bool Active { get; set; }
 
         public InputComponent(MarauderEngine.Entity.Entity entity)

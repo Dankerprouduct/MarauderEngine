@@ -8,7 +8,7 @@ namespace MarauderEngine.Entity
     public class EntityPrototype
     { 
     //{
-    //    public string entityName;
+    //    public string EntityName;
     //    public Component[] components; 
     }
 }

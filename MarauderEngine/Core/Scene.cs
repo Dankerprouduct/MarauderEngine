@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MarauderEngine.Components;
+using MarauderEngine.Core.DataStructures;
+using MarauderEngine.Entity;
 using MarauderEngine.Physics.Core;
 using MarauderEngine.Systems;
+using MarauderEngine.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,15 +17,27 @@ namespace MarauderEngine.Core
     public class Scene
     {
 
+        public SceneData SceneData = new SceneData();
+
+        public string SceneName
+        {
+            get => SceneData.SceneName;
+            set => SceneData.SceneName = value; 
+        }
         public PhysicsWorld PhysicsWorld;
         public CellSpacePartition CellSpacePartition;
 
         // update queue for cell space partition 
         List<int> _partitionsToUpdate = new List<int>();
+
         /// <summary>
         /// Set this to true if you want to manually update partitions instead of allowing the scene to control it 
         /// </summary>
-        public bool ManuallyUpdateScene { get; set; }
+        public bool ManuallyUpdateScene
+        {
+            get => SceneData.ManuallyUpdateScene;
+            set => SceneData.ManuallyUpdateScene = value;
+        }
 
         private RenderTarget2D _scene; 
 
@@ -36,12 +51,23 @@ namespace MarauderEngine.Core
             PhysicsWorld = new PhysicsWorld(width, height,4);
             CellSpacePartition = new CellSpacePartition(width, height);
             ManuallyUpdateScene = false;
-            _scene = new RenderTarget2D(SceneManagement.GraphicsDevice,
-                SceneManagement.GraphicsDevice.PresentationParameters.BackBufferWidth,
-                SceneManagement.GraphicsDevice.PresentationParameters.BackBufferHeight,
-                false,
-                SceneManagement.GraphicsDevice.PresentationParameters.BackBufferFormat,
-                DepthFormat.Depth24);
+
+            if (string.IsNullOrEmpty(SceneName))
+            {
+                SceneName = "Scene";
+            }
+
+            //_scene = new RenderTarget2D(SceneManagement.GraphicsDevice,
+            //    SceneManagement.GraphicsDevice.PresentationParameters.BackBufferWidth,
+            //    SceneManagement.GraphicsDevice.PresentationParameters.BackBufferHeight,
+            //    false,
+            //    SceneManagement.GraphicsDevice.PresentationParameters.BackBufferFormat,
+            //    DepthFormat.Depth24);
+        }
+
+        public Scene(string sceneName,int width, int height): this(width, height)
+        {
+            SceneName = sceneName;
         }
 
         public virtual void Update(GameTime gameTime)
@@ -226,7 +252,26 @@ namespace MarauderEngine.Core
 
 
         }
-        
+
+        public void SaveScene()
+        {
+            // save dynamic entities 
+            var dynamicEntityData = CellSpacePartition.dynamicCells.Where(i => i.members != null)
+                .SelectMany(m => m.members).Select(d => d.EntityData).ToArray();
+            //(d => d.EntityData).ToArray();
+            
+            // save static entities
+            var staticEntityData = CellSpacePartition.staticCells.SelectMany(i => i.GetEntities()).Where(a => a != null).Select(d => d.EntityData).ToArray();
+
+            // setting scene data 
+            SceneData.DynamicEntityData = dynamicEntityData;
+            SceneData.StaticEntityData = staticEntityData;
+
+
+            GameData<SceneData> CurrentSceneData = new GameData<SceneData>();
+            CurrentSceneData.SaveData(SceneData, SceneName, ".json");
+
+        }
         public bool FireGlobalEvent(Event _event, MarauderEngine.Entity.Entity entity)
         {
             return false;

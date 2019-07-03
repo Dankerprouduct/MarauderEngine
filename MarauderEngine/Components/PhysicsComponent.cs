@@ -13,8 +13,14 @@ namespace MarauderEngine.Components
         
         public Circle CollisionCircle;
 
-        public event EventHandler<CollisionEvent> CollidedWithEntity;  
+        public event EventHandler<CollisionEvent> CollidedWithEntity;
 
+        public override Type type => GetType();
+
+        public PhysicsComponent()
+        {
+
+        }
         public PhysicsComponent(MarauderEngine.Entity.Entity owner)
         {
             RegisterComponent(owner, "PhysicsComponent");
@@ -70,7 +76,6 @@ namespace MarauderEngine.Components
             //_position = body.Position;
             Owner.GetComponent<TransformComponent>().Position = CollisionCircle.Particle.Position; 
             
-
             
         }
 

@@ -16,6 +16,7 @@ namespace MarauderEngine.Components
     {
 
 
+        public override Type type => GetType();
         public string TextureName
         {
             get => _data.TextureName;
@@ -85,6 +86,7 @@ namespace MarauderEngine.Components
             set => throw new NotImplementedException();
         }
 
+        public SpriteComponent() { }
         /// <summary>
         /// Draws texture to screen given the textures name
         /// Note: The parent of this component must have a TransformComponent attached to it before adding this one

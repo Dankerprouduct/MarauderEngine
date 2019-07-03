@@ -17,6 +17,7 @@ namespace MarauderEngine.Components
             set => _data.ScriptName = value;
         }
 
+        public override Type type => GetType();
         private Lua state;
 
         private LuaFunction _initFunction;

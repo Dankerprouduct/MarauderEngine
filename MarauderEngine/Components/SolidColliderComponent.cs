@@ -12,7 +12,9 @@ namespace MarauderEngine.Components
     {
 
         public Rectangle Rectangle;
-        public Circle CollisionCircle; 
+        public Circle CollisionCircle;
+
+        public override Type type => GetType();
         public SolidColliderComponent(MarauderEngine.Entity.Entity entity)
         {
             RegisterComponent(entity, "SolidColliderComponent");

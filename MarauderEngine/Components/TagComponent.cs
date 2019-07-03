@@ -20,6 +20,8 @@ namespace MarauderEngine.Components
             set => _data.TagName = value;
         }
 
+        public override Type type => GetType();
+        public TagComponent() { }
         public TagComponent(Entity.Entity entity, string tagName)
         {
             TagName = tagName; 

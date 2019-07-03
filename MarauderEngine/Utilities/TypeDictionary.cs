@@ -18,6 +18,12 @@ namespace MarauderEngine.Utilities
             return Get<T>();
         }
 
+        public void ForceAdd<T>(TValue value)
+        {
+            Add(value.GetType(), value);
+
+        }
+
         public bool Remove<T>()
         {
             return Remove(typeof(T));

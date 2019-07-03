@@ -10,6 +10,8 @@ namespace MarauderEngine.Components
         MarauderEngine.Entity.Entity Owner { get; set; }
         string Name { get; set; }
 
+        ComponentData Data { get; set; }
+
         /// <summary>
         /// The data for this
         /// </summary>

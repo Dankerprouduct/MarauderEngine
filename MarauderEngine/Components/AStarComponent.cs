@@ -21,6 +21,8 @@ namespace MarauderEngine.Components
         private Thread _pathingThread;
         private bool _isPathing = false;
 
+        public override Type type => GetType();
+
         /// <summary>
         /// the distance at which the entity will stop pathfinding and move straight towards the target
         /// </summary>
@@ -29,6 +31,8 @@ namespace MarauderEngine.Components
             get => _data.IgnoreDistance;
             set => _data.IgnoreDistance = value;
         }
+
+        public AStarComponent() { }
 
         /// <summary>
         /// Used for entity pathfining
@@ -40,6 +44,7 @@ namespace MarauderEngine.Components
             RegisterComponent(owner, "AStarComponent");
             _pathfinding = new Pathfinding();
         }
+
 
 
         public override bool FireEvent(Event eEvent)

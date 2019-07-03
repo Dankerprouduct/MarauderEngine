@@ -12,7 +12,7 @@ namespace MarauderEngine.Systems
         public static int DrawnEntities = 0;
         public struct DynamicCell
         {
-            public List<MarauderEngine.Entity.Entity> members; 
+            public List<MarauderEngine.Entity.Entity> members;
             
             public void AddEntity(MarauderEngine.Entity.Entity entity)
             {
@@ -158,13 +158,15 @@ namespace MarauderEngine.Systems
             public List<MarauderEngine.Entity.Entity> GetEntities()
             {
                 List<MarauderEngine.Entity.Entity> tempEmEntities = new List<MarauderEngine.Entity.Entity>();
-
-                for (int x = 0; x < members.GetLength(0); x++)
+                if (members != null)
                 {
-                    for (int y = 0; y < members.GetLength(1); y++)
+                    for (int x = 0; x < members.GetLength(0); x++)
                     {
-                        
-                        tempEmEntities.Add(members[x,y]);
+                        for (int y = 0; y < members.GetLength(1); y++)
+                        {
+
+                            tempEmEntities.Add(members[x, y]);
+                        }
                     }
                 }
 

@@ -11,6 +11,7 @@ namespace MarauderEngine.Components
         // Implement if abstract GetType does not return child type.
         //public override Type type => GetType();
 
+        public override Type type => GetType();
         public Vector2 Position
         {
             get => _data.Position;
@@ -39,6 +40,7 @@ namespace MarauderEngine.Components
             }
         }
 
+        public TransformComponent() { }
         public TransformComponent(MarauderEngine.Entity.Entity owner)
         {
             RegisterComponent(owner, "TransformComponent");

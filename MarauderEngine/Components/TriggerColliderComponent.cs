@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MarauderEngine.Components.Data;
 using Microsoft.Xna.Framework;
 
@@ -9,6 +10,7 @@ namespace MarauderEngine.Components
         Rectangle _rectangle;
         bool _destroy = false;
 
+        public override Type type => GetType();
         public TriggerColliderComponent(MarauderEngine.Entity.Entity entity)
         {
             RegisterComponent(entity, "TriggerColliderComponent");

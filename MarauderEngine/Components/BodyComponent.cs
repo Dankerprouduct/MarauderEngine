@@ -1,4 +1,5 @@
-﻿using MarauderEngine.Entity.Body;
+﻿using MarauderEngine.Components.Data;
+using MarauderEngine.Entity.Body;
 using Microsoft.Xna.Framework;
 
 namespace MarauderEngine.Components
@@ -7,6 +8,7 @@ namespace MarauderEngine.Components
     {
         public MarauderEngine.Entity.Entity Owner { get; set; }
         public string Name { get; set; }
+        public ComponentData Data { get; set; }
         public bool Active { get; set; }
         
         public Body body;

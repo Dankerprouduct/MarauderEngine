@@ -90,6 +90,7 @@
     <Compile Include="Components\TransformComponent.cs" />
     <Compile Include="Components\TriggerColliderComponent.cs" />
     <Compile Include="Core\Coroutines.cs" />
+    <Compile Include="Core\DataStructures\SceneData.cs" />
     <Compile Include="Core\Debug.cs" />
     <Compile Include="Core\MarauderComponent.cs" />
     <Compile Include="Core\Render\BatchManager.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Entity\Body\Head.cs" />
     <Compile Include="Entity\Decoration.cs" />
     <Compile Include="Entity\Entity.cs" />
+    <Compile Include="Entity\EntityData.cs" />
     <Compile Include="Entity\EntityPrototype.cs" />
     <Compile Include="Entity\Room.cs" />
     <Compile Include="Entity\Items\Item.cs" />
@@ -246,7 +248,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\DataStructures\" />
     <Folder Include="Physics\Core\ForceGenerators\" />
   </ItemGroup>
   <ItemGroup>

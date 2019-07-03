@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using MarauderEngine.Components;
@@ -7,6 +9,7 @@ using MarauderEngine.Utilities;
 using MarauderEngine.World;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using IComponent = MarauderEngine.Components.IComponent;
 using MathHelper = MarauderEngine.Utilities.MathHelper;
 
 namespace MarauderEngine.Entity
@@ -25,6 +28,7 @@ namespace MarauderEngine.Entity
         public int oldCellIndex;
 
         public Entity Parent { get; set; }
+        public EntityData EntityData = new EntityData();
         public List<Entity> Children = new List<Entity>();
 
         /// <summary>
@@ -33,7 +37,11 @@ namespace MarauderEngine.Entity
         /// </summary>
         public bool active = true;
 
-        public string entityName;
+        public string EntityName
+        {
+            get => EntityData.EntityName;
+            set => EntityData.EntityName = value; 
+        }
 
         public TypeDictionary<IComponent> Components = new TypeDictionary<IComponent>();
 
@@ -43,20 +51,22 @@ namespace MarauderEngine.Entity
         public Entity()
         {
             id = nextAvailibleID;
-            nextAvailibleID++;
-            active = true; 
-            
-        }
-
-        public Entity(Entity parent)
-        {
-            id = nextAvailibleID;
+            EntityData.EntityID = id;
             nextAvailibleID++;
             active = true;
+            EntityData.EntityName = EntityName;
+            EntityData.EntityType = this.GetType().UnderlyingSystemType;
+        }
 
+        public Entity(Entity parent) : this()
+        {
             Parent = parent;
             Parent.Children.Add(this);
+            Parent.EntityData.Children.Add(EntityData);
+
         }
+
+
 
         /// <summary>
         /// Sets a parent
@@ -71,6 +81,7 @@ namespace MarauderEngine.Entity
 
             Parent = parent; 
             Parent.Children.Add(this);
+            Parent.EntityData.Children.Add(EntityData);
         }
 
         /// <summary>
@@ -113,7 +124,7 @@ namespace MarauderEngine.Entity
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public T GetComponent<T>()
+        public T GetComponent<T>() where T: IComponent
         {
             return (T)Components.Get<T>();
         }
@@ -130,16 +141,21 @@ namespace MarauderEngine.Entity
         }
 
 
-        public T AddComponent<T>(IComponent value)
-        {
-            Components.Add<T>(value);
-            return GetComponent<T>(); 
-        }
+        //public T AddComponent<T>(IComponent value) 
+        //{
+        //    Components.Add<T>(value);
+        //    return GetComponent<T>(); 
+        //}
 
         public T AddComponent<T>(T component) where T : IComponent
         {
             Components.Add<T>(component);
             return GetComponent<T>();
+        }
+
+        public void ForceAddComponent<T>(T component) where T : IComponent
+        {
+            Components.ForceAdd<T>(component);
         }
 
         public bool HasComponent<T>()
@@ -307,8 +323,6 @@ namespace MarauderEngine.Entity
 
             UpdateCellIndex(); 
             UpdateComponents(gameTime);
-
-            
         }
 
         public void UpdateCellIndex()
