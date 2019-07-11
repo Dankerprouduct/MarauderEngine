@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using MarauderEngine.Systems;
 using MarauderEngine.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -8,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MarauderEngine.Graphics
 {
-    public static class TextureManager
+    public class TextureManager : SystemManager<TextureManager>
     {
         public static Dictionary<string, List<Texture2D>> TextureLists = new Dictionary<string, List<Texture2D>>();
         public static List<Texture2D> Tiles = new List<Texture2D>();
@@ -25,7 +26,7 @@ namespace MarauderEngine.Graphics
 
         private static Dictionary<string, Texture2D> _textures = new Dictionary<string, Texture2D>();
         private static Dictionary<string, SpriteFont> _fonts = new Dictionary<string, SpriteFont>();
-        private static Dictionary<string, object> _contentDictionary = new Dictionary<string, object>();
+        public static Dictionary<string, object> ContentDictionary = new Dictionary<string, object>();
 
         public struct TileSet
         {
@@ -70,13 +71,13 @@ namespace MarauderEngine.Graphics
             foreach (var file in files)
             {
                 string key = Path.GetFileNameWithoutExtension(file.Name);                
-                _contentDictionary.Add(key, content.Load<T>(folder + "/" + key));
+                ContentDictionary.Add(key, content.Load<T>(folder + "/" + key));
             }
         }
 
         public static void LoadContent<T>(string folderPath, string name, ContentManager content)
         {
-            _contentDictionary.Add(name, content.Load<T>(folderPath + "/" + name));
+            ContentDictionary.Add(name, content.Load<T>(folderPath + "/" + name));
         }
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace MarauderEngine.Graphics
         /// <returns></returns>
         public static T GetContent<T>(string name)
         {
-            return (T)_contentDictionary[name];
+            return (T)ContentDictionary[name];
         }
 
         /// <summary>
@@ -97,7 +98,7 @@ namespace MarauderEngine.Graphics
         /// <returns></returns>
         public static bool ContainsContent(string name)
         {
-            return _contentDictionary.ContainsKey(name);
+            return ContentDictionary.ContainsKey(name);
         }
 
         [System.Obsolete()]
@@ -353,5 +354,9 @@ namespace MarauderEngine.Graphics
 
         }
 
+        public override void Initialize()
+        {
+            
+        }
     }
 }

@@ -78,7 +78,7 @@ namespace MarauderEngine.Components
         /// <summary>
         /// Updates Component
         /// </summary>
-        public override void UpdateComponent()
+        public override void UpdateComponent(GameTime gameTime)
         {
             //var physicsComponent = Owner.GetComponent<PhysicsComponent>(); //(PhysicsComponent) Owner.GetComponent("PhysicsComponent");
             
@@ -91,6 +91,16 @@ namespace MarauderEngine.Components
         public override void Destroy()
         {
 
+        }
+
+        public override string ToString()
+        {
+            string information =
+                $"Type: {type} \n" +
+                $"Position: {Position} \n" +
+                $"Rotation: {Rotation}";
+
+            return information;
         }
     }
 }

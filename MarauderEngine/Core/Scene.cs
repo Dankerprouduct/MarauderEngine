@@ -261,8 +261,8 @@ namespace MarauderEngine.Core
             //(d => d.EntityData).ToArray();
             
             // save static entities
-            var staticEntityData = CellSpacePartition.staticCells.SelectMany(i => i.GetEntities()).Where(a => a != null).Select(d => d.EntityData).ToArray();
-
+            var staticEntityData = CellSpacePartition.staticCells.Where(i => i.members != null)
+                .SelectMany(m => m.members).Select(d => d.EntityData).ToArray();
             // setting scene data 
             SceneData.DynamicEntityData = dynamicEntityData;
             SceneData.StaticEntityData = staticEntityData;

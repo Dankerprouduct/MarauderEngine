@@ -1,4 +1,5 @@
 ﻿using MarauderEngine.Components.Data;
+using Microsoft.Xna.Framework;
 
 namespace MarauderEngine.Components
 {
@@ -39,7 +40,7 @@ namespace MarauderEngine.Components
         /// <summary>
         /// Updates the Component. Updates are called from the Owner's Update method. 
         /// </summary>
-        void UpdateComponent();
+        void UpdateComponent(GameTime gameTime);
 
         /// <summary>
         /// Destroys the Component on Owner's DestroyEntity method.

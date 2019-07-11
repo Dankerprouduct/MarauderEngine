@@ -10,5 +10,11 @@ namespace MarauderEngine.Components.Data
     public class PhysicsCData : ComponentData
     {
         public Vector2 Position { get; set;}
+
+        public float MaxSpeed = 0;
+
+        public float Dampening = .95f;
+
+        public float Radius = 30;
     }
 }

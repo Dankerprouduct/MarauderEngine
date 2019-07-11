@@ -25,16 +25,16 @@ namespace MarauderEngine.Components
         {
             RegisterComponent(owner, "PhysicsComponent");
 
-            RegisterPhysicsBody();
-            CollisionCircle.CollidedWithEntity += OnCollision;
+            //RegisterPhysicsBody();
+            //CollisionCircle.CollidedWithEntity += OnCollision;
         }
 
         public PhysicsComponent(MarauderEngine.Entity.Entity owner, float colliderRadius)
         {
             RegisterComponent(owner, "PhysicsComponent");
+            _data.Radius = colliderRadius;
             Active = true; 
-            RegisterPhysicsBody(colliderRadius);
-            CollisionCircle.CollidedWithEntity += OnCollision;
+            
         }
 
         private void OnCollision(object sender, CollisionEvent e)
@@ -48,10 +48,21 @@ namespace MarauderEngine.Components
         /// </summary>
         public void RegisterPhysicsBody(float radius = 30)
         {
+            
             CollisionCircle = new Circle(new Particle(Owner.GetComponent<TransformComponent>().Position, Vector2.Zero, 1),this, radius);
             CollisionCircle.Particle.ActiveParticle = true; 
             //Physics.PhysicsSystem.Instance.AddBody(body);
             PhysicsWorld.Instance.Add(CollisionCircle);
+        }
+
+        public override void RegisterComponent(Entity.Entity entity, string componentName)
+        {
+            base.RegisterComponent(entity, componentName);
+            RegisterPhysicsBody(_data.Radius);
+            CollisionCircle.Particle.MaxSpeed = _data.MaxSpeed;
+            CollisionCircle.Particle.Dampening = _data.Dampening; 
+            CollisionCircle.SetRadius(_data.Radius);
+            CollisionCircle.CollidedWithEntity += OnCollision;
         }
 
         /// <summary>
@@ -71,14 +82,14 @@ namespace MarauderEngine.Components
             return false;
         }
 
-        public override void UpdateComponent()
+        public override void UpdateComponent(GameTime gameTime)
         {
             //_position = body.Position;
             Owner.GetComponent<TransformComponent>().Position = CollisionCircle.Particle.Position; 
             
             
         }
-
+        
         public void SetPosition(Vector2 position)
         {
             CollisionCircle.Particle.Position = position;
@@ -90,7 +101,7 @@ namespace MarauderEngine.Components
         /// <param name="dampening"></param>
         public void SetDampening(float dampening)
         {
-            CollisionCircle.Particle.Dampening = dampening;
+            CollisionCircle.Particle.Dampening = _data.Dampening;
         }
 
         /// <summary>
@@ -99,7 +110,13 @@ namespace MarauderEngine.Components
         /// <param name="maxSpeed"></param>
         public void SetMaxSpeed(float maxSpeed)
         {
-            CollisionCircle.Particle.MaxSpeed = maxSpeed; 
+            CollisionCircle.Particle.MaxSpeed = _data.MaxSpeed; 
+        }
+
+        public void SetRadius(float radius)
+        {
+            CollisionCircle.SetRadius(radius);
+            _data.Radius = radius;
         }
 
 

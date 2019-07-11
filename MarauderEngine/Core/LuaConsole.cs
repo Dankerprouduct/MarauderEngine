@@ -36,12 +36,13 @@ namespace MarauderEngine.Core
         private void LoadLuaFunctions()
         {
             lua = new Lua();
+            lua.LoadCLRPackage();
             lua.RegisterFunction("SetVerbosityLevel",this, GetType().GetMethod("SetVerbosityLevel"));
             lua.RegisterFunction("ClearConsole", this, GetType().GetMethod("ClearConsole"));
             lua.RegisterFunction("SetParticleMax", this, GetType().GetMethod("SetParticleMax"));
             lua.RegisterFunction("SpawnVessel", this, GetType().GetMethod("SpawnVessel"));
             lua.RegisterFunction("ToggleCollider", this, GetType().GetMethod("ToggleCollider"));
-
+            
             for (int i = 0; i < _luaFunctions.Count; i++)
             {
                 lua.RegisterFunction(_luaFunctions[i].Path, _luaFunctions[i].Target, _luaFunctions[i].Method);

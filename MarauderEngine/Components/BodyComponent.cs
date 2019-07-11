@@ -64,7 +64,7 @@ namespace MarauderEngine.Components
             return false;
         }
 
-        public void UpdateComponent()
+        public void UpdateComponent(GameTime gameTime)
         {
             body.Update(_transformComponent.Position, _transformComponent.Rotation);
         }

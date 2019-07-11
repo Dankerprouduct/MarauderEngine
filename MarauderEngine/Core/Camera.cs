@@ -24,7 +24,7 @@ namespace MarauderEngine.Core
         private float _maxScale = 4;
 
         public bool CamControl = true;
-        float speed = 60;
+        public float speed = 60;
         private float originalSpeed = 60;
         private float _zoomSpeed = .0005f;
         public static Vector2 position;
@@ -109,19 +109,19 @@ namespace MarauderEngine.Core
                 lerpedCenter = Vector2.Lerp(lerpedCenter, center, .5f);
                 keyboardState = Keyboard.GetState();
 
-                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+                if (keyboardState.IsKeyDown(Keys.Up) /*|| keyboardState.IsKeyDown(Keys.W)*/)
                 {
                     position.Y -= speed;
                 }
-                if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
+                if (keyboardState.IsKeyDown(Keys.Down) /*|| keyboardState.IsKeyDown(Keys.S)*/)
                 {
                     position.Y += speed;
                 }
-                if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+                if (keyboardState.IsKeyDown(Keys.Right) /*|| keyboardState.IsKeyDown(Keys.D)*/)
                 {
                     position.X += speed;
                 }
-                if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
+                if (keyboardState.IsKeyDown(Keys.Left) /*|| keyboardState.IsKeyDown(Keys.A)*/)
                 {
                     position.X -= speed;
                 }
@@ -158,6 +158,26 @@ namespace MarauderEngine.Core
 
             oldMouseState = mouseState;
             oldKeyboardState = keyboardState;
+        }
+
+        public void WSADMovement()
+        {
+            if (keyboardState.IsKeyDown(Keys.W) /*|| keyboardState.IsKeyDown(Keys.W)*/)
+            {
+                position.Y -= speed;
+            }
+            if (keyboardState.IsKeyDown(Keys.S) /*|| keyboardState.IsKeyDown(Keys.S)*/)
+            {
+                position.Y += speed;
+            }
+            if (keyboardState.IsKeyDown(Keys.D) /*|| keyboardState.IsKeyDown(Keys.D)*/)
+            {
+                position.X += speed;
+            }
+            if (keyboardState.IsKeyDown(Keys.A) /*|| keyboardState.IsKeyDown(Keys.A)*/)
+            {
+                position.X -= speed;
+            }
         }
 
         public Vector2 TopLeftPosition { get; private set; }

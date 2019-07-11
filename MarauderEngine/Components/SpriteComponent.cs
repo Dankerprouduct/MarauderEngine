@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using MarauderEngine.Components.Data;
 using MarauderEngine.Core.Render;
 using MarauderEngine.Graphics;
+using MarauderEngine.Graphics.Animation;
+using MarauderEngine.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MathHelper = MarauderEngine.Utilities.MathHelper;
@@ -21,6 +23,18 @@ namespace MarauderEngine.Components
         {
             get => _data.TextureName;
             set => _data.TextureName = value; 
+        }
+
+        public string AnimationPath
+        {
+            get => _data.AnimationPath;
+            set => _data.AnimationPath = value;
+        }
+
+        public float FrameDuration
+        {
+            get => _data.FrameDuration;
+            set => _data.FrameDuration = value;
         }
 
         public Vector2 TextureCenter
@@ -47,12 +61,6 @@ namespace MarauderEngine.Components
             set => _data.Rotation = value;
         }
 
-        public bool StupidDrawing
-        {
-            get => _data.StupidDrawing;
-            set => _data.StupidDrawing = value;
-        }
-
         /// <summary>
         /// the tint of the sprite. Defaults to white
         /// </summary>
@@ -72,16 +80,44 @@ namespace MarauderEngine.Components
         }
 
 
+        public Animation Animation;
+
+        public DrawingMode SpriteDrawingMode
+        {
+            get => _data.DrawingMode;
+            set => _data.DrawingMode = value; 
+        }
+
+        public enum DrawingMode
+        {
+            Stupid, 
+            Smart,
+            Animated
+        }
+
+        private Point animationSize;
         public Rectangle Rectangle
         {
             get
-            { 
-                return new Rectangle(new Point(
-                    Owner.GetComponent<TransformComponent>().Position.ToPoint().X - (int)TextureCenter.X,
-                    Owner.GetComponent<TransformComponent>().Position.ToPoint().Y - (int)TextureCenter.Y),
-                    new Point(
-                        TextureManager.GetContent<Texture2D>(TextureName).Width,
-                        TextureManager.GetContent<Texture2D>(TextureName).Height));
+            {
+                if (SpriteDrawingMode != DrawingMode.Animated)
+                {
+                    return new Rectangle(new Point(
+                            Owner.GetComponent<TransformComponent>().Position.ToPoint().X - (int) TextureCenter.X,
+                            Owner.GetComponent<TransformComponent>().Position.ToPoint().Y - (int) TextureCenter.Y),
+                        new Point(
+                            TextureManager.GetContent<Texture2D>(TextureName).Width,
+                            TextureManager.GetContent<Texture2D>(TextureName).Height));
+                }
+                else
+                {
+                    return new Rectangle(new Point(
+                            Owner.GetComponent<TransformComponent>().Position.ToPoint().X - (int)TextureCenter.X,
+                            Owner.GetComponent<TransformComponent>().Position.ToPoint().Y - (int)TextureCenter.Y),
+                        new Point(
+                            animationSize.X,
+                            animationSize.Y));
+                }
             }
             set => throw new NotImplementedException();
         }
@@ -101,6 +137,46 @@ namespace MarauderEngine.Components
             SpriteScale = 1;
             Color = Color.White;
             ColorMod = 1; 
+            
+        }
+        
+        public SpriteComponent(Entity.Entity owner, string textureName, string animationPath, float frameDuration = 1)
+        {
+            RegisterComponent(owner, "SpriteComponent");
+            TextureName = textureName;
+            SetTextureName(textureName);
+            
+            SpriteScale = 1;
+            Color = Color.White;
+            ColorMod = 1;
+            FrameDuration = frameDuration;
+            AnimationPath = animationPath;
+
+            var sheet = new Spritesheet(TextureManager.GetContent<Texture2D>(TextureName)).WithGrid((Spritesheet.GetFrameFromPath(animationPath).X, Spritesheet.GetFrameFromPath(animationPath).Y))
+                .WithFrameDuration(frameDuration);
+            animationSize = Spritesheet.GetFrameFromPath(animationPath);
+            Console.WriteLine(animationSize);
+            Animation = sheet.CreateAnimation(animationPath);
+            Animation.Start(Repeat.Mode.Loop);
+            
+            SpriteDrawingMode = DrawingMode.Animated;
+            TextureCenter = new Vector2(animationSize.X /2, animationSize.Y / 2);
+        }
+
+        public override void RegisterComponent(Entity.Entity entity, string componentName)
+        {
+            base.RegisterComponent(entity, componentName);
+
+            if (SpriteDrawingMode == DrawingMode.Animated)
+            {
+                var sheet = new Spritesheet(TextureManager.GetContent<Texture2D>(TextureName)).WithGrid((
+                        Spritesheet.GetFrameFromPath(AnimationPath).X, Spritesheet.GetFrameFromPath(AnimationPath).Y))
+                    .WithFrameDuration(FrameDuration);
+                Animation = sheet.CreateAnimation(AnimationPath);
+                Animation.Start(Repeat.Mode.Loop);
+                
+                Console.WriteLine("made animated sprite");
+            }
         }
 
         public override bool FireEvent(Event eEvent)
@@ -108,10 +184,20 @@ namespace MarauderEngine.Components
             return false;
         }
 
-        public override void UpdateComponent()
+        public override void UpdateComponent(GameTime gameTime)
         {
             Rotation = Owner.GetComponent<TransformComponent>().Rotation;
+
+            if (SpriteDrawingMode == DrawingMode.Animated)
+            {
+                if (animationSize == Point.Zero)
+                {
+                    animationSize = Spritesheet.GetFrameFromPath(AnimationPath);
+                }
+                Animation.Update(gameTime);
+            }
         }
+
 
         public override void Destroy()
         {
@@ -143,19 +229,26 @@ namespace MarauderEngine.Components
             //spriteBatch.Draw(TextureManager.GetContent<Texture2D>(TextureName), Owner.GetComponent<TransformComponent>().Position, Color.White);
             if (Active)
             {
-                if (!StupidDrawing)
+                if (SpriteDrawingMode == DrawingMode.Smart)
                 {
                     spriteBatch.Draw(TextureManager.GetContent<Texture2D>(TextureName),
                         Owner.GetComponent<TransformComponent>().Position, null, Color * ColorMod,
                         Rotation, TextureCenter, SpriteScale, SpriteEffects.None,
                         Layer);
                 }
-                else
+                else if(SpriteDrawingMode == DrawingMode.Stupid)
                 {
                     spriteBatch.Draw(TextureManager.GetContent<Texture2D>(TextureName),
                         Owner.GetComponent<TransformComponent>().Position, null, Color * ColorMod,
                         0, new Vector2(0,0), SpriteScale, SpriteEffects.None,
                         Layer);
+                }
+                else if(SpriteDrawingMode == DrawingMode.Animated)
+                {
+                   // spriteBatch.Draw(Animation, Owner.GetComponent<TransformComponent>().Position, Color * ColorMod, Rotation);
+                    spriteBatch.Draw(Animation, Owner.GetComponent<TransformComponent>().Position,
+                        Color * ColorMod,
+                        Rotation, null, Layer);
                 }
             }
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MarauderEngine.Components.Data;
+using Microsoft.Xna.Framework;
 
 namespace MarauderEngine.Components
 {
@@ -50,13 +51,18 @@ namespace MarauderEngine.Components
 
         public virtual void RegisterComponent(MarauderEngine.Entity.Entity entity, string componentName)
         {
-            _data = new T {Name = componentName, ComponentType = type ,Active = true};
+            if (_data == null)
+            {
+                _data = new T {Name = componentName, ComponentType = type, Active = true};
+            }
+
+            _data.ComponentType = type; 
             Owner = entity; 
             entity.EntityData.Components.Add(_data);
         }
 
         public abstract bool FireEvent(Event eEvent);
-        public abstract void UpdateComponent();
+        public abstract void UpdateComponent(GameTime gameTime);
         public abstract void Destroy();
     }
 }

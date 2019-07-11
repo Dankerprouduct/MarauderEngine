@@ -57,7 +57,7 @@ namespace MarauderEngine.Components
             return false; 
         }
 
-        public override void UpdateComponent()
+        public override void UpdateComponent(GameTime gameTime)
         {
             _rectangle = Owner.collisionRectanlge;
             // = entity; 

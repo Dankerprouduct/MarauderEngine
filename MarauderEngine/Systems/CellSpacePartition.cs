@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MarauderEngine.Components;
 using MarauderEngine.Core;
+using MarauderEngine.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -262,7 +265,7 @@ namespace MarauderEngine.Systems
         public Vector2 offset; 
 
         public DynamicCell[] dynamicCells;
-        public StaticCell[] staticCells; 
+        public DynamicCell[] staticCells; 
 
         public CellSpacePartition(int cellX, int cellY, int partitionSize = 4)
         {
@@ -273,12 +276,12 @@ namespace MarauderEngine.Systems
             int cellIndex = cellX * cellY;
             cellLength = cellIndex;
             dynamicCells = new DynamicCell[cellIndex];
-            staticCells = new StaticCell[cellIndex];
+            staticCells = new DynamicCell[cellIndex];
 
             for (int i = 0; i < cellIndex; i++)
             {
                 dynamicCells[i] = new DynamicCell();
-                staticCells[i] = new StaticCell();
+                staticCells[i] = new DynamicCell();
                 
             }
 
@@ -305,7 +308,53 @@ namespace MarauderEngine.Systems
             return temp.ToArray(); 
             ///lis
         }
-        
+
+        public Entity.Entity GetEntity(Point point)
+        {
+            Entity.Entity entity = null;
+            Console.WriteLine(point);
+
+
+            for (int i = 0; i < staticCells.Length; i++)
+            {
+                if (staticCells[i].members != null)
+                {
+                    foreach (var ent in staticCells[i].members)
+                    {
+                        if (!ent.HasComponent<SpriteComponent>()) continue;
+                        var rect = TextureManager
+                            .GetContent<Texture2D>(ent.GetComponent<SpriteComponent>()
+                                .TextureName).Bounds;
+
+                        rect = new Rectangle(ent.GetComponent<TransformComponent>().Position.ToPoint(), new Point(rect.Width, rect.Height));
+                        if (rect.Contains(point))
+                        {
+                            entity = ent;
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < dynamicCells.Length; i++)
+            {
+                if (dynamicCells[i].members != null)
+                {
+                    foreach (var ent in dynamicCells[i].members)
+                    {
+                        if (!ent.HasComponent<SpriteComponent>()) continue;
+                        var rect = ent.GetComponent<SpriteComponent>().Rectangle;
+                        rect = new Rectangle(ent.GetComponent<TransformComponent>().Position.ToPoint(), new Point(rect.Width, rect.Height));
+                        if (rect.Contains(point))
+                        {
+                            entity = ent;
+                        }
+                    }
+                }
+            }
+            
+            return entity;
+        }
+
         // adds entity to appropriate static cell
         public void AddStaticEntity(MarauderEngine.Entity.Entity entity)
         {

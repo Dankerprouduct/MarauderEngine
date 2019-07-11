@@ -56,6 +56,9 @@ namespace MarauderEngine.Entity
             active = true;
             EntityData.EntityName = EntityName;
             EntityData.EntityType = this.GetType().UnderlyingSystemType;
+
+            MarauderComponent.AddEntityType(this);
+
         }
 
         public Entity(Entity parent) : this()
@@ -355,7 +358,7 @@ namespace MarauderEngine.Entity
         {
             foreach (var component in Components.Values)
             {
-                component.UpdateComponent();
+                component.UpdateComponent(gameTime);
             }
         }
 

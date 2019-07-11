@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MarauderEngine.Components.Data;
 using NLua;
 using MarauderEngine.Core;
+using Microsoft.Xna.Framework;
 
 namespace MarauderEngine.Components
 {
@@ -47,7 +48,7 @@ namespace MarauderEngine.Components
             return false; 
         }
         
-        public override void UpdateComponent()
+        public override void UpdateComponent(GameTime gameTime)
         {
             
             _updateFunction.Call();

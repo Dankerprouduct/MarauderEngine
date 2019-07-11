@@ -27,7 +27,7 @@ namespace MarauderEngine.Physics.Core.Shapes
         public bool Active { get; set; }
 
         // private 
-        private readonly float _radius; 
+        private float _radius; 
 
         
         [System.Obsolete("please provide a owner", true)]
@@ -55,6 +55,11 @@ namespace MarauderEngine.Physics.Core.Shapes
         public float GetRadius()
         {
             return _radius; 
+        }
+
+        public void SetRadius(float radius)
+        {
+            _radius = radius; 
         }
 
         public bool Intersects(ICollider collider)

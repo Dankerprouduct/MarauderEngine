@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO; 
 
 namespace MarauderEngine.Graphics.Animation
 {
@@ -92,6 +93,65 @@ namespace MarauderEngine.Graphics.Animation
         public Animation CreateAnimation(params (int x, int y)[] frames)
         {
             return this.CreateAnimation(frames.Select(x => (x.x, x.y, this.FrameDefaultDuration, this.FrameDefaultEffects)).ToArray());
+        }
+
+        public Animation CreateAnimation(string path)
+        {
+            StreamReader sr = new StreamReader(path);
+            int height = File.ReadLines(path).Count();
+            char[] splits = { '=', ' ' };
+
+
+            List<Rectangle> frames = new List<Rectangle>();
+            for (int y = 0; y < height; y++)
+            {
+                string line = sr.ReadLine();
+                string[] rectData = line.Split(splits);
+
+                foreach (string s in rectData)
+                {
+
+                    frames.Add(new Rectangle(
+                        Convert.ToInt32(rectData[3]) / Convert.ToInt32(rectData[5]),
+                        Convert.ToInt32(rectData[4]) / Convert.ToInt32(rectData[6]),
+                        Convert.ToInt32(rectData[5]),
+                        Convert.ToInt32(rectData[6])));
+                    
+                    //Console.WriteLine(Convert.ToInt32(rectData[3]) / Convert.ToInt32(rectData[5]) + " , " + Convert.ToInt32(rectData[4]) / Convert.ToInt32(rectData[6]));
+                   
+                }
+            }
+
+            return this.CreateAnimation(frames.Select(x => (x.X, x.Y, this.FrameDefaultDuration, this.FrameDefaultEffects)).ToArray());
+        }
+
+        public static Point GetFrameFromPath(string path)
+        {
+            StreamReader sr = new StreamReader(path);
+            int height = File.ReadLines(path).Count();
+            char[] splits = { '=', ' ' };
+
+            List<Rectangle> frames = new List<Rectangle>();
+            for (int y = 0; y < height; y++)
+            {
+                string line = sr.ReadLine();
+                string[] rectData = line.Split(splits);
+
+                foreach (string s in rectData)
+                {
+
+                    frames.Add(new Rectangle(
+                        Convert.ToInt32(rectData[3]) / Convert.ToInt32(rectData[5]),
+                        Convert.ToInt32(rectData[4]) / Convert.ToInt32(rectData[6]),
+                        Convert.ToInt32(rectData[5]),
+                        Convert.ToInt32(rectData[6])));
+
+                    //Console.WriteLine(Convert.ToInt32(rectData[3]) / Convert.ToInt32(rectData[5]) + " , " + Convert.ToInt32(rectData[4]) / Convert.ToInt32(rectData[6]));
+
+                }
+            }
+            
+            return  new Point(frames[0].Width, frames[0].Height);
         }
     }
 }

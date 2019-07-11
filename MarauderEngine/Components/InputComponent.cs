@@ -35,7 +35,7 @@ namespace MarauderEngine.Components
             return false;
         }
 
-        public void UpdateComponent()
+        public void UpdateComponent(GameTime gameTime)
         {
             keyboardState = Keyboard.GetState();
             

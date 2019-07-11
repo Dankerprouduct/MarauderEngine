@@ -11,6 +11,10 @@ namespace MarauderEngine.Components.Data
     {
         public string TextureName { get; set; }
 
+        public string AnimationPath { get; set; }
+
+        public float FrameDuration { get; set; }
+
         public Vector2 TextureCenter { get; set; }
         public float SpriteScale { get; set; }
 
@@ -18,7 +22,7 @@ namespace MarauderEngine.Components.Data
 
         public float Rotation { get; set; }
 
-        public bool StupidDrawing = false;
+        public SpriteComponent.DrawingMode DrawingMode = SpriteComponent.DrawingMode.Smart;
 
         /// <summary>
         /// the tint of the sprite. Defaults to white

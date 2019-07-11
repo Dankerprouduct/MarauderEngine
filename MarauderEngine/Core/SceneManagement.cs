@@ -29,6 +29,10 @@ namespace MarauderEngine.Core
             EntityTagSystem.Instance = new EntityTagSystem();
         }
 
+        public SceneManagement()
+        {
+            EntityTagSystem.Instance = new EntityTagSystem();
+        }
         public override void Initialize()
         {
             
@@ -59,9 +63,15 @@ namespace MarauderEngine.Core
             CurrentScene.SaveScene();
         }
 
+        private string folderPath = @"Saves\";
+        public void SetFolderPath(string newPath)
+        {
+            folderPath = newPath;
+        }
         public Scene LoadScene(string filename)
         {
             GameData<SceneData> LoadedSceneData = new GameData<SceneData>();
+            LoadedSceneData.folderPath = folderPath;
             SceneData loadedScene = LoadedSceneData.LoadObjectData(filename);
 
             Scene scene = new Scene(loadedScene.SceneName, 602, 602);
@@ -69,6 +79,7 @@ namespace MarauderEngine.Core
             // add back in dynamic entities
             EntityData[] dynamicEntities = loadedScene.DynamicEntityData;
 
+            Console.WriteLine("LOADING DYNAMIC ENTITIES");
             for (int i = 0; i < dynamicEntities.Length; i++)
             {
 
@@ -81,17 +92,22 @@ namespace MarauderEngine.Core
                 for (int c = 0; c < dynamicEntities[i].Components.Count; c++)
                 {
                     IComponent component = Activator.CreateInstance(dynamicEntities[i].Components[c].ComponentType) as IComponent;
-                    Console.WriteLine(component.GetType());
+
+
+                    entity.ForceAddComponent(component);
+
+                    component.Data = dynamicEntities[i].Components[c];
                     component.RegisterComponent(entity, dynamicEntities[i].Components[c].Name);
                     component.Owner = entity;
-                    component.Data = dynamicEntities[i].Components[c];
-                    entity.ForceAddComponent(component);
+                    
+                    
                 }
                 
 
                 scene.AddDynamicEntity(entity);
             }
-
+            Console.WriteLine("LOADED DYNAMIC ENTITIES");
+            Console.WriteLine("LOADING STATIC ENTITIES");
 
             // add back in static entities 
             EntityData[] staticEntities = loadedScene.StaticEntityData;
@@ -100,26 +116,25 @@ namespace MarauderEngine.Core
             {
 
                 Entity.Entity entity = Activator.CreateInstance(staticEntities[i].EntityType) as Entity.Entity;
-                entity.EntityData = staticEntities[i];
+                entity.EntityData = new EntityData();
                 entity.EntityData.Children = staticEntities[i].Children;
 
                 for (int c = 0; c < staticEntities[i].Components.Count; c++)
                 {
-                    var component = Activator.CreateInstance(staticEntities[i].Components[c].ComponentType) as IComponent;
-                    Console.WriteLine(component.GetType());
+                    IComponent component = Activator.CreateInstance(staticEntities[i].Components[c].ComponentType) as IComponent;
+
+                    entity.ForceAddComponent(component);
+
+                    component.Data = staticEntities[i].Components[c];
                     component.RegisterComponent(entity, staticEntities[i].Components[c].Name);
                     component.Owner = entity;
-                    component.Data = staticEntities[i].Components[c];
-                    if (!entity.Components.ContainsKey(component.GetType()))
-                    {
-                        entity.ForceAddComponent(component);
-                    }
                 }
 
 
                 scene.AddStaticEntity(entity);
+                entity = null;
             }
-
+            Console.WriteLine("LOADED STATIC ENTITIES");
             return scene;
         }
 

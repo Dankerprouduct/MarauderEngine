@@ -60,6 +60,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="AI\FSM\GoTo.cs" />
     <Compile Include="AI\FSM\Idle.cs" />
@@ -90,6 +93,7 @@
     <Compile Include="Components\TransformComponent.cs" />
     <Compile Include="Components\TriggerColliderComponent.cs" />
     <Compile Include="Core\Coroutines.cs" />
+    <Compile Include="Core\DataStructures\ProjectData.cs" />
     <Compile Include="Core\DataStructures\SceneData.cs" />
     <Compile Include="Core\Debug.cs" />
     <Compile Include="Core\MarauderComponent.cs" />
@@ -185,6 +189,7 @@
   <ItemGroup>
     <Reference Include="KeraLua, Version=1.0.13.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
       <HintPath>..\packages\KeraLua.1.0.13\lib\net45\KeraLua.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
