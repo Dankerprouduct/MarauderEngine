@@ -5,9 +5,7 @@ VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarauderEngine", "MarauderEngine\MarauderEngine.csproj", "{6D8C6F01-844B-4047-849E-B6566A65C7E1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MEngine", "MEngine\MEngine.csproj", "{DC42DB4C-57B4-46D8-8089-2EF95BB287B3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarauderEditorWPF", "MarauderEditor\MarauderEditorWPF.csproj", "{149E4357-A757-4EAF-B7B2-2C4750B0608E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarauderEditor", "MarauderEditor\MarauderEditor.csproj", "{E0C7E892-EE6D-4C1A-B4A0-645725D5AD56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,22 +22,14 @@ Global
 		{6D8C6F01-844B-4047-849E-B6566A65C7E1}.Release|Any CPU.ActiveCfg = Release|x86
 		{6D8C6F01-844B-4047-849E-B6566A65C7E1}.Release|x86.ActiveCfg = Release|x86
 		{6D8C6F01-844B-4047-849E-B6566A65C7E1}.Release|x86.Build.0 = Release|x86
-		{DC42DB4C-57B4-46D8-8089-2EF95BB287B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC42DB4C-57B4-46D8-8089-2EF95BB287B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC42DB4C-57B4-46D8-8089-2EF95BB287B3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DC42DB4C-57B4-46D8-8089-2EF95BB287B3}.Debug|x86.Build.0 = Debug|Any CPU
-		{DC42DB4C-57B4-46D8-8089-2EF95BB287B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC42DB4C-57B4-46D8-8089-2EF95BB287B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DC42DB4C-57B4-46D8-8089-2EF95BB287B3}.Release|x86.ActiveCfg = Release|Any CPU
-		{DC42DB4C-57B4-46D8-8089-2EF95BB287B3}.Release|x86.Build.0 = Release|Any CPU
-		{149E4357-A757-4EAF-B7B2-2C4750B0608E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{149E4357-A757-4EAF-B7B2-2C4750B0608E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{149E4357-A757-4EAF-B7B2-2C4750B0608E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{149E4357-A757-4EAF-B7B2-2C4750B0608E}.Debug|x86.Build.0 = Debug|Any CPU
-		{149E4357-A757-4EAF-B7B2-2C4750B0608E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{149E4357-A757-4EAF-B7B2-2C4750B0608E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{149E4357-A757-4EAF-B7B2-2C4750B0608E}.Release|x86.ActiveCfg = Release|Any CPU
-		{149E4357-A757-4EAF-B7B2-2C4750B0608E}.Release|x86.Build.0 = Release|Any CPU
+		{E0C7E892-EE6D-4C1A-B4A0-645725D5AD56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0C7E892-EE6D-4C1A-B4A0-645725D5AD56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0C7E892-EE6D-4C1A-B4A0-645725D5AD56}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E0C7E892-EE6D-4C1A-B4A0-645725D5AD56}.Debug|x86.Build.0 = Debug|Any CPU
+		{E0C7E892-EE6D-4C1A-B4A0-645725D5AD56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0C7E892-EE6D-4C1A-B4A0-645725D5AD56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0C7E892-EE6D-4C1A-B4A0-645725D5AD56}.Release|x86.ActiveCfg = Release|Any CPU
+		{E0C7E892-EE6D-4C1A-B4A0-645725D5AD56}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

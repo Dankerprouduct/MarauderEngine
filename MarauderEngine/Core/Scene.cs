@@ -256,14 +256,55 @@ namespace MarauderEngine.Core
         public void SaveScene()
         {
             // save dynamic entities 
-            var dynamicEntityData = CellSpacePartition.dynamicCells.Where(i => i.members != null)
-                .SelectMany(m => m.members).Select(d => d.EntityData).ToArray();
+            List<EntityData> dynamicEntityList = new List<EntityData>();
+            //var dynamicEntityData = CellSpacePartition.dynamicCells.Where(i => i.members != null)
+            //    .SelectMany(m => m.members).Select(d => d.EntityData).ToArray();
+
+            for (int i = 0; i < CellSpacePartition.dynamicCells.Length; i++)
+            {
+                if (CellSpacePartition.dynamicCells[i].members != null)
+                {
+                    for (int j = 0; j < CellSpacePartition.dynamicCells[i].members.Count; j++)
+                    {
+                        var entity = CellSpacePartition.dynamicCells[i].members[j];
+                        var eType = CellSpacePartition.dynamicCells[i].members[j].GetType();
+                        var data = CellSpacePartition.dynamicCells[i].members[j].EntityData;
+                        data.EntityType = eType;
+                        Console.WriteLine(data.EntityType);
+                        dynamicEntityList.Add(data);
+                    }
+                }
+            }
+
+            var dynamicEntityData = dynamicEntityList.ToArray();
+
             //(d => d.EntityData).ToArray();
-            
+
             // save static entities
-            var staticEntityData = CellSpacePartition.staticCells.Where(i => i.members != null)
-                .SelectMany(m => m.members).Select(d => d.EntityData).ToArray();
+            List<EntityData> staticEntityList = new List<EntityData>();
+            //var staticEntityData = CellSpacePartition.staticCells.Where(i => i.members != null)
+            //    .SelectMany(m => m.members).Select(d => d.EntityData).ToArray();
             // setting scene data 
+
+
+            for (int i = 0; i < CellSpacePartition.staticCells.Length; i++)
+            {
+                if (CellSpacePartition.staticCells[i].members != null)
+                {
+                    for (int j = 0; j < CellSpacePartition.staticCells[i].members.Count; j++)
+                    {
+                        var entity = CellSpacePartition.staticCells[i].members[j];
+                        var eType = CellSpacePartition.staticCells[i].members[j].GetType();
+                        var data = CellSpacePartition.staticCells[i].members[j].EntityData;
+                        data.EntityType = eType;
+                        Console.WriteLine(data.EntityType);
+                        staticEntityList.Add(data);
+                    }
+                }
+            }
+
+            var staticEntityData = staticEntityList.ToArray();
+
             SceneData.DynamicEntityData = dynamicEntityData;
             SceneData.StaticEntityData = staticEntityData;
 

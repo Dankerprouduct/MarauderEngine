@@ -1,6 +1,13 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization.Formatters;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Steamworks;
 
 
 namespace MarauderEngine.Utilities
@@ -20,11 +27,11 @@ namespace MarauderEngine.Utilities
         {
             settings = new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.All,
+                TypeNameHandling = TypeNameHandling.Auto,
                 NullValueHandling = NullValueHandling.Ignore,
-                PreserveReferencesHandling = PreserveReferencesHandling.None
-            };
-            
+                PreserveReferencesHandling = PreserveReferencesHandling.None,
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full
+            };            
         }
 
         public GameData(JsonSerializerSettings settings)
@@ -93,6 +100,33 @@ namespace MarauderEngine.Utilities
             string newPath = folderPath + @"\" + fileName + extension;
 
             string contents = File.ReadAllText(newPath);
+
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Console.WriteLine($"assembly: {assembly}");
+            }
+
+            T tempEntities = JsonConvert.DeserializeObject<T>(contents, settings);
+            return tempEntities;
+
+        }
+
+        /// <summary>
+        /// Deserializes data into an object
+        /// </summary>
+        /// <param name="fileName">name of file to deserialize</param>
+        /// <returns></returns>
+        public T LoadObjectData(string fileName, string extension, string assemblyPath)
+        {
+            string newPath = folderPath + @"\" + fileName + extension;
+
+            string contents = File.ReadAllText(newPath);
+            var assembly = Assembly.LoadFrom(assemblyPath);
+            AppDomain.CurrentDomain.Load(assembly.GetName());
+             
+            settings.SerializationBinder = new CustomAssemblyBinder(assembly);
+
             T tempEntities = JsonConvert.DeserializeObject<T>(contents, settings);
             return tempEntities;
 
@@ -139,4 +173,36 @@ namespace MarauderEngine.Utilities
 
         }
     }
+
+    public class CustomAssemblyBinder : ISerializationBinder
+    {
+        private Assembly _referencedAssembly;
+        private List<Type> _knownTypes = new List<Type>();
+        public CustomAssemblyBinder(Assembly assembly)
+        {
+            _referencedAssembly = assembly;
+
+            foreach (var type in _referencedAssembly.GetTypes())
+            {
+                _knownTypes.Add(type.UnderlyingSystemType);
+            }
+
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                _knownTypes.Add(type.UnderlyingSystemType);
+            }
+        }
+        public Type BindToType(string assemblyName, string typeName)
+        {
+            Console.WriteLine("trying to load:" + typeName);
+            return _knownTypes.SingleOrDefault(i => i.FullName == typeName);
+
+        }
+
+        public void BindToName(Type serializedType, out string assemblyName, out string typeName)
+        {
+            assemblyName = null;
+            typeName = serializedType.Name;
+        }
+    } 
 }

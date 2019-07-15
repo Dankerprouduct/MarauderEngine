@@ -23,7 +23,7 @@ namespace MarauderEngine.Graphics
         public static List<Texture2D> GuiItemTextures = new List<Texture2D>();
         public static List<Texture2D> GraphicsTextures = new List<Texture2D>();
         public static List<Texture2D> Decorations = new List<Texture2D>();
-
+        public static string FullFolderPath = "Content";
         private static Dictionary<string, Texture2D> _textures = new Dictionary<string, Texture2D>();
         private static Dictionary<string, SpriteFont> _fonts = new Dictionary<string, SpriteFont>();
         public static Dictionary<string, object> ContentDictionary = new Dictionary<string, object>();
@@ -61,17 +61,30 @@ namespace MarauderEngine.Graphics
         /// <param name="content"></param>
         public static void LoadFolder<T>(string folder, ContentManager content)
         {
-            DirectoryInfo dir = new DirectoryInfo(content.RootDirectory + "/" + folder);
+            DirectoryInfo dir = new DirectoryInfo("C:/");
+            if (FullFolderPath != "Content")
+            {
+                dir = new DirectoryInfo(FullFolderPath + @"\" +  content.RootDirectory + @"\" + folder);
+            }
+            else
+            {
+                dir = new DirectoryInfo(content.RootDirectory + "/" + folder);
+            }
             if (!dir.Exists)
             {
                 throw new DirectoryNotFoundException();
+                //dir = new DirectoryInfo(folder);
             }
 
             FileInfo[] files = dir.GetFiles("*.*");
             foreach (var file in files)
             {
-                string key = Path.GetFileNameWithoutExtension(file.Name);                
-                ContentDictionary.Add(key, content.Load<T>(folder + "/" + key));
+                string key = Path.GetFileNameWithoutExtension(file.Name);   
+                
+                if(FullFolderPath == "Content")
+                    ContentDictionary.Add(key, content.Load<T>(folder + "/" + key));
+                if (FullFolderPath != "Content")
+                    ContentDictionary.Add(key, content.Load<T>(file.Directory + "/" + key));
             }
         }
 

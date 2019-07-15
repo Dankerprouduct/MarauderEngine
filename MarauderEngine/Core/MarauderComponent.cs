@@ -53,7 +53,8 @@ namespace MarauderEngine.Core
 
         public void InitializeSceneManagement()
         {
-            SceneManagement.Instance = new SceneManagement();
+            SceneManagement = new SceneManagement();
+            //SceneManagement.Instance = new SceneManagement();
             Console.WriteLine("Initialized Scene Management");
         }
 
@@ -77,6 +78,11 @@ namespace MarauderEngine.Core
         public virtual void LoadContent()
         {
             
+        }
+
+        public Scene LoadScene(string path)
+        {
+            return SceneManagement.LoadScene(path);
         }
         
         public void LoadTheContent(ContentManager content)

@@ -136,8 +136,9 @@ namespace MarauderEngine.Components
             SetTextureName(textureName);
             SpriteScale = 1;
             Color = Color.White;
-            ColorMod = 1; 
-            
+            ColorMod = 1;
+            Rotation = 0; 
+
         }
         
         public SpriteComponent(Entity.Entity owner, string textureName, string animationPath, float frameDuration = 1)

@@ -13,6 +13,7 @@ using MarauderEngine.Systems;
 using MarauderEngine.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using IComponent = MarauderEngine.Components.IComponent;
 
 namespace MarauderEngine.Core
@@ -22,7 +23,8 @@ namespace MarauderEngine.Core
         public static Scene CurrentScene;
 
         List<Scene> _scenes = new List<Scene>();
-        public static GraphicsDevice GraphicsDevice; 
+        public static GraphicsDevice GraphicsDevice;
+        private JsonSerializerSettings _settings;
         public SceneManagement(GraphicsDevice graphicsDevice)
         {
             GraphicsDevice = graphicsDevice;
@@ -68,9 +70,11 @@ namespace MarauderEngine.Core
         {
             folderPath = newPath;
         }
+        
         public Scene LoadScene(string filename)
         {
             GameData<SceneData> LoadedSceneData = new GameData<SceneData>();
+
             LoadedSceneData.folderPath = folderPath;
             SceneData loadedScene = LoadedSceneData.LoadObjectData(filename);
 
@@ -138,6 +142,83 @@ namespace MarauderEngine.Core
             return scene;
         }
 
+        public Scene LoadScene(string filename, string assemblyPath)
+        {
+            GameData<SceneData> LoadedSceneData = new GameData<SceneData>();
+            if (_settings == null)
+            {
+                LoadedSceneData = new GameData<SceneData>();
+            }
+            else
+            {
+                LoadedSceneData = new GameData<SceneData>(_settings);
+            }
+            LoadedSceneData.folderPath = folderPath;
+            SceneData loadedScene = LoadedSceneData.LoadObjectData(filename, ".json", assemblyPath);
+
+            Scene scene = new Scene(loadedScene.SceneName, 602, 602);
+
+            // add back in dynamic entities
+            EntityData[] dynamicEntities = loadedScene.DynamicEntityData;
+
+            Console.WriteLine("LOADING DYNAMIC ENTITIES");
+            for (int i = 0; i < dynamicEntities.Length; i++)
+            {
+
+                Entity.Entity entity = Activator.CreateInstance(dynamicEntities[i].EntityType) as Entity.Entity;
+                entity.EntityData = new EntityData();
+                entity.EntityData.Children = dynamicEntities[i].Children;
+
+
+
+                for (int c = 0; c < dynamicEntities[i].Components.Count; c++)
+                {
+                    IComponent component = Activator.CreateInstance(dynamicEntities[i].Components[c].ComponentType) as IComponent;
+
+
+                    entity.ForceAddComponent(component);
+
+                    component.Data = dynamicEntities[i].Components[c];
+                    component.RegisterComponent(entity, dynamicEntities[i].Components[c].Name);
+                    component.Owner = entity;
+
+
+                }
+
+
+                scene.AddDynamicEntity(entity);
+            }
+            Console.WriteLine("LOADED DYNAMIC ENTITIES");
+            Console.WriteLine("LOADING STATIC ENTITIES");
+
+            // add back in static entities 
+            EntityData[] staticEntities = loadedScene.StaticEntityData;
+
+            for (int i = 0; i < staticEntities.Length; i++)
+            {
+
+                Entity.Entity entity = Activator.CreateInstance(staticEntities[i].EntityType) as Entity.Entity;
+                entity.EntityData = new EntityData();
+                entity.EntityData.Children = staticEntities[i].Children;
+
+                for (int c = 0; c < staticEntities[i].Components.Count; c++)
+                {
+                    IComponent component = Activator.CreateInstance(staticEntities[i].Components[c].ComponentType) as IComponent;
+
+                    entity.ForceAddComponent(component);
+
+                    component.Data = staticEntities[i].Components[c];
+                    component.RegisterComponent(entity, staticEntities[i].Components[c].Name);
+                    component.Owner = entity;
+                }
+
+
+                scene.AddStaticEntity(entity);
+                entity = null;
+            }
+            Console.WriteLine("LOADED STATIC ENTITIES");
+            return scene;
+        }
         public static T Cast<T>(object o)
         {
             return (T)o;

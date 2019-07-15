@@ -56,7 +56,7 @@ namespace MarauderEngine.Entity
             active = true;
             EntityData.EntityName = EntityName;
             EntityData.EntityType = this.GetType().UnderlyingSystemType;
-
+            Console.WriteLine("type set to " + EntityData.EntityType);
             MarauderComponent.AddEntityType(this);
 
         }
