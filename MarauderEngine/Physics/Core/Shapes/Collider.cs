@@ -38,10 +38,28 @@ namespace MarauderEngine.Physics.Core.Shapes
         public bool Intersects(ICollider other)
         {
 
-            return Polygon2.Intersects(
+            
+
+            if (Polygon2.Intersects(
                 PhysicsCollider, other.PhysicsCollider,
-                Particle.Position, other.Particle.Position, 
-                false);
+                Particle.Position, other.Particle.Position,
+                false))
+            {
+                // event 1
+                CollisionEvent args = new CollisionEvent();
+                args.Colliding = true;
+                args.Entity1 = Owner.Owner;
+                args.Entity2 = other.Owner.Owner;
+
+                OnCollision(this, args);
+                other.OnCollision(this, args);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
             
         }
 

@@ -22,8 +22,8 @@ namespace MarauderEngine.Systems
         /// <param name="projectile"></param>
         public static void AddProjectile(Projectile projectile)
         {
-            projectile.GetComponent<PhysicsComponent>().CollisionCircle.OldPartitionIndex =
-                projectile.GetCenterPartition(); 
+            //projectile.GetComponent<PhysicsComponent>().CollisionCircle.OldPartitionIndex =
+            //    projectile.GetCenterPartition(); 
             //World.World.Instance.AddDynamicEntity(projectile);
             projectiles.Add(projectile);
             Console.WriteLine("Added projectile: " + projectile.GetType());
@@ -43,7 +43,7 @@ namespace MarauderEngine.Systems
                     projectiles[i].Update(gameTime);  
                     //projectiles[i].UpdateComponents(gameTime);
                     //projectiles[i].GetComponent<PhysicsComponent>().UpdateComponent();
-                    int p0 = PhysicsWorld.Instance.ColliderPartition.PositionToIndex(projectiles[i].GetComponent<PhysicsComponent>().CollisionCircle);
+                    int p0 = 0;//PhysicsWorld.Instance.ColliderPartition.PositionToIndex(projectiles[i].GetComponent<PhysicsComponent>().CollisionCircle);
                     var p1 = p0 + 150;
                     var p2 = p0 - 150;
                     var p3 = p0 + 151;
@@ -68,7 +68,7 @@ namespace MarauderEngine.Systems
                 else
                 {
 
-                    PhysicsWorld.Instance.ColliderPartition.Remove(projectiles[i].GetComponent<PhysicsComponent>().CollisionCircle);
+                    //PhysicsWorld.Instance.ColliderPartition.Remove(projectiles[i].GetComponent<PhysicsComponent>().CollisionCircle);
                     projectiles[i].DestroyEntity();
                     projectiles.RemoveAt(i);
 

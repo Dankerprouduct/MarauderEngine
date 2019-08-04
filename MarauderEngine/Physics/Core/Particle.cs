@@ -141,9 +141,7 @@ namespace MarauderEngine.Physics.Core
                 Velocity += PhysicsWorld.Instance.Gravity;
 
                 Velocity *= Dampening;
-
-                Console.WriteLine(Velocity);
-
+                
                 Direction = new Vector2(Velocity.X, Velocity.Y);
                 Rotation = (float)Math.Atan2(Direction.Y, Direction.X);
 
@@ -250,7 +248,7 @@ namespace MarauderEngine.Physics.Core
                         other.Particle.Velocity.Y -= (impulse * other.Particle.InvertedMass).Y;
 
                         // Events
-
+                        
                     }
                     
                 }
