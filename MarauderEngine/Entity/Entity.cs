@@ -372,6 +372,7 @@ namespace MarauderEngine.Entity
             foreach (var component in Components.Values)
             {
                 component.Destroy();
+                
             }
             Components.Clear();
         }

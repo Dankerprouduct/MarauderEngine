@@ -124,7 +124,7 @@ namespace MarauderEngine.Components
 
         public override void Destroy()
         {
-            
+            PhysicsWorld.Instance.DestroyCollider(Collider);
         }
     }
 }
