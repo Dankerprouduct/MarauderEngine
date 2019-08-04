@@ -38,8 +38,8 @@ namespace MarauderEngine.Graphics
         {
             foreach (var drawable in Drawables)
             {
-                spriteBatch.Draw(TextureManager.TextureLists[drawable.TextureListName][drawable.TextureId],
-                    drawable.TransformComponent.Position, Color.White);
+                //spriteBatch.Draw(TextureManager.TextureLists[drawable.TextureListName][drawable.TextureId],
+                //    drawable.TransformComponent.Position, Color.White);
             }
         }
     }

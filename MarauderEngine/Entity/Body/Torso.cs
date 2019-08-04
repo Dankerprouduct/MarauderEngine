@@ -20,7 +20,7 @@ namespace MarauderEngine.Entity.Body
    
         public override void Update(Vector2 center, float rotation)
         {
-            bounds = TextureManager.BodyParts[textureID].Bounds;
+            //bounds = TextureManager.BodyParts[textureID].Bounds;
 
             // if the rotation moves out of predefined boudns then rotate -> reset boudns
             if (rotation <= leftBounds)

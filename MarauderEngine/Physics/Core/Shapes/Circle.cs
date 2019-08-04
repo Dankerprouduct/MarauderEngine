@@ -4,9 +4,11 @@ using MarauderEngine.Core;
 using MarauderEngine.Physics.Core.SpatialPartition;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
+using SharpMath2;
 
 namespace MarauderEngine.Physics.Core.Shapes
 {
+    [System.Obsolete]
     public class Circle : ICollider
     {
         // public 
@@ -16,6 +18,8 @@ namespace MarauderEngine.Physics.Core.Shapes
         public Vector2 Center { get; set; }
         public bool Colliding { get; set; }
         public int Layer { get; set; }
+        public Polygon2 PhysicsCollider { get; set; }
+        public Rotation2 Rotation { get; set; }
         public IComponent Owner { get; set; }
 
         public event EventHandler<CollisionEvent> CollidedWithEntity;
@@ -94,13 +98,15 @@ namespace MarauderEngine.Physics.Core.Shapes
                 return result;
             }
 
-            if(collider is Polygon)
+            if(collider is RectangleCollider)
             {
-                var polygon = (Polygon) collider;
-                //return PhysicsWorld.CircleLineIntersection(this, polygon.TopLeft, polygon.TopRight) ||
-                //       PhysicsWorld.CircleLineIntersection(this, polygon.TopRight, polygon.BottomRight) ||
-                //       PhysicsWorld.CircleLineIntersection(this, polygon.BottomRight, polygon.BottomLeft) ||
-                //       PhysicsWorld.CircleLineIntersection(this, polygon.BottomLeft, polygon.TopLeft);
+                var rect = ((RectangleCollider) collider);
+                var circleRect = new Rectangle(
+                    (int)Particle.Position.X - (int)_radius, 
+                    (int)Particle.Position.Y - (int)_radius, 
+                    (int)_radius * 2, (int)_radius * 2);
+
+                return circleRect.Intersects(rect.GetRectangle());
             }
 
             return false;

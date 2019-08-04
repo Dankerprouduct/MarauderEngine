@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MarauderEngine.Entity.Body
 {
+    [System.Obsolete]
     public class BodyPart
     {
         public int textureID;
@@ -23,10 +24,10 @@ namespace MarauderEngine.Entity.Body
             offset = _offset;
             currentOffset = offset; 
             this.textureID = textureID; 
-            center = new Vector2(
-                            TextureManager.BodyParts[textureID].Width / 2,
-                            TextureManager.BodyParts[textureID].Height / 2)
-                            ;
+            //center = new Vector2(
+            //                TextureManager.BodyParts[textureID].Width / 2,
+            //                TextureManager.BodyParts[textureID].Height / 2)
+            //                ;
         }         
         
         public virtual void Update(Vector2 center, float rotation)
@@ -52,14 +53,14 @@ namespace MarauderEngine.Entity.Body
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(Utilities.TextureManager.bodyPart[textureID], positon, null, Color.White, rotation, center, 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(TextureManager.BodyParts[textureID],
-                positon, null,
-                Color.White,
-                rotation,
-                center,
-                scale,
-                SpriteEffects.None,
-                0f);
+            //spriteBatch.Draw(TextureManager.BodyParts[textureID],
+            //    positon, null,
+            //    Color.White,
+            //    rotation,
+            //    center,
+            //    scale,
+            //    SpriteEffects.None,
+            //    0f);
         }
 
     }

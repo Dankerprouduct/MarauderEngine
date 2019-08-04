@@ -25,9 +25,9 @@ namespace MarauderEngine.Components
         public TagComponent() { }
         public TagComponent(Entity.Entity entity, string tagName)
         {
-            TagName = tagName; 
             RegisterComponent(entity, "TagComponent");
 
+            TagName = tagName;
             EntityTagSystem.Instance.RegisterTagComponent(this);
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using MarauderEngine.Physics.Core.Shapes;
 using Microsoft.Xna.Framework;
+using SharpMath2;
 
 namespace MarauderEngine.Physics.Core
 {
@@ -92,7 +93,6 @@ namespace MarauderEngine.Physics.Core
             {
                 return; 
             }
-
             Integrate(gameTime);
 
         }
@@ -133,13 +133,16 @@ namespace MarauderEngine.Physics.Core
                 // updates acceleration 
                 Vector2 resultingAcc = Acceleration;
                 resultingAcc += ForceAccumulator * 1;//(float) (1 / gameTime.ElapsedGameTime.Milliseconds));
+                
 
                 Velocity += resultingAcc * 1;
                 //Console.WriteLine($"Vel {resultingAcc} Force Acum {ForceAccumulator}");
 
+                Velocity += PhysicsWorld.Instance.Gravity;
+
                 Velocity *= Dampening;
 
-
+                Console.WriteLine(Velocity);
 
                 Direction = new Vector2(Velocity.X, Velocity.Y);
                 Rotation = (float)Math.Atan2(Direction.Y, Direction.X);
@@ -168,18 +171,26 @@ namespace MarauderEngine.Physics.Core
                 {
 
                     ICollider other;
-                    _position.X += PhysicsWorld.Instance.Gravity.X + (float) Velocity.X + (int) baseVelocity.X;
+                    _position.X += (float) Velocity.X + (int) baseVelocity.X;
 
                     if (PhysicsWorld.Instance.CollidesWithCollider(Collider, out other, Collider.Layer))
                     {
 
                         _position.X = OldPosition.X;
 
-                        Vector2 depth = (PhysicsWorld.Instance.GetIntersectionDepth((Circle)Collider, (Circle)other));
-                        _position.X += depth.X;
+                        //Vector2 depth = (PhysicsWorld.Instance.GetIntersectionDepth(Collider, other));
+                        //Console.WriteLine(depth);
+                        //_position.X += depth.X;
+
+                        Tuple<Vector2, float> mtv = Polygon2.IntersectMTV(Collider.PhysicsCollider, other.PhysicsCollider, Position, other.Particle.Position);
+                        if (mtv != null)
+                        {
+                            _position.X += mtv.Item1.Y * mtv.Item2;
+                        }
+
                         if (other.Particle.InvertedMass != 0)
                         {
-                            other.Particle._position.X -= depth.X;
+                            //other.Particle._position.X -= depth.X;
                         }
                         //Velocity.X = -Velocity.X * j;
 
@@ -201,16 +212,27 @@ namespace MarauderEngine.Physics.Core
 
                     }
 
-                    _position.Y += PhysicsWorld.Instance.Gravity.Y + (float)Velocity.Y + (int)baseVelocity.Y;
+                    _position.Y += (float)Velocity.Y + (int)baseVelocity.Y;
                     if (PhysicsWorld.Instance.CollidesWithCollider(Collider, out other, Collider.Layer))
                     {
                         _position.Y = OldPosition.Y;
 
-                        Vector2 depth = (PhysicsWorld.Instance.GetIntersectionDepth((Circle)Collider, (Circle)other) / 1);
-                        _position.Y += depth.Y;
+                        //Vector2 depth = (PhysicsWorld.Instance.GetIntersectionDepth(Collider, other) / 1);
+                        //_position.Y += depth.Y;
+
+                        Tuple<Vector2, float> mtv = Polygon2.IntersectMTV(Collider.PhysicsCollider, other.PhysicsCollider, Position, other.Particle.Position);
+                        if (mtv != null)
+                        {
+                            _position.Y += mtv.Item1.Y * mtv.Item2;
+                        }
+
                         if (other.Particle.InvertedMass != 0)
                         {
-                            other.Particle._position.Y -= depth.Y;
+                            if (mtv != null)
+                            {
+
+                            }
+                            //other.Particle._position.Y -= depth.Y;
                         }
 
                         Vector2 relativeVelocity = other.Particle.Velocity - Velocity;

@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using MarauderEngine.Components;
 using MarauderEngine.Physics.Core.SpatialPartition;
 using Microsoft.Xna.Framework;
+using SharpMath2;
 
 namespace MarauderEngine.Physics.Core.Shapes
 {
     /// <summary>
     /// 
     /// </summary>
+    [System.Obsolete]
     public class Polygon : ICollider
     {
         public Particle Particle { get; set; }
@@ -21,6 +23,8 @@ namespace MarauderEngine.Physics.Core.Shapes
         public bool Colliding { get; set; }
         public bool Active { get; set; }
         public int Layer { get; set; }
+        public Polygon2 PhysicsCollider { get; set; }
+        public Rotation2 Rotation { get; set; }
         public IComponent Owner { get; set; }
         public event EventHandler<CollisionEvent> CollidedWithEntity;
 
@@ -98,6 +102,11 @@ namespace MarauderEngine.Physics.Core.Shapes
         public bool Intersects(Point other)
         {
             return _rect.Contains(other);
+        }
+
+        public float GetRadius()
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(GameTime gameTime)

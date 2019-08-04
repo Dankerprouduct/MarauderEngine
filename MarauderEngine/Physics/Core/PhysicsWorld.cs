@@ -39,8 +39,6 @@ namespace MarauderEngine.Physics.Core
 
         public void Add(ICollider collider)
         {
-
-            Debug.Log($"Spawning Solid Collider @ {collider.Particle.Position}", Debug.LogType.Info, 2);
             ColliderPartition.Add(collider);
         }
 
@@ -374,7 +372,7 @@ namespace MarauderEngine.Physics.Core
             }
             foreach (var otherCollider in _collidersInArea)
             {
-                if (otherCollider.Layer == layer)
+                if (otherCollider.Layer == layer)   
                 {
                     if (collider != otherCollider)
                     {
@@ -396,6 +394,15 @@ namespace MarauderEngine.Physics.Core
         }
 
         public Vector2 GetIntersectionDepth(Circle a, Circle b)
+        {
+            Vector2 direction = b.Particle.Position - a.Particle.Position;
+            float distance = direction.Length();
+            direction.Normalize();
+            float depth = (a.GetRadius() + b.GetRadius()) - distance;
+            return depth > 0 ? depth * direction : Vector2.Zero;
+        }
+
+        public Vector2 GetIntersectionDepth(ICollider a, ICollider b)
         {
             Vector2 direction = b.Particle.Position - a.Particle.Position;
             float distance = direction.Length();

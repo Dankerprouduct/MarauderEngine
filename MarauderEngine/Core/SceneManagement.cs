@@ -57,12 +57,12 @@ namespace MarauderEngine.Core
 
         public void Update(GameTime gameTime)
         {
-            CurrentScene.Update(gameTime);
+            CurrentScene?.Update(gameTime);
         }
 
         public void SaveScene()
         {
-            CurrentScene.SaveScene();
+            CurrentScene?.SaveScene();
         }
 
         private string folderPath = @"Saves\";
@@ -228,7 +228,7 @@ namespace MarauderEngine.Core
         {
             CellSpacePartition.DrawnEntities = 0;
 
-            CurrentScene.DrawScene(spriteBatch);
+            CurrentScene?.DrawScene(spriteBatch);
         }
 
     }

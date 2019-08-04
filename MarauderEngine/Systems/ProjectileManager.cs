@@ -86,7 +86,7 @@ namespace MarauderEngine.Systems
             {
                 if (projectiles[i].active)
                 {
-                    spriteBatch.Draw(TextureManager.Sprites[0], projectiles[i].GetComponent<TransformComponent>().Position, Color.White);
+                    //spriteBatch.Draw(TextureManager.Sprites[0], projectiles[i].GetComponent<TransformComponent>().Position, Color.White);
                 }
             }
         }

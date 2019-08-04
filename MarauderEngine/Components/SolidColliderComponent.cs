@@ -5,6 +5,7 @@ using MarauderEngine.Entity;
 using MarauderEngine.Physics.Core;
 using MarauderEngine.Physics.Core.Shapes;
 using Microsoft.Xna.Framework;
+using SharpMath2;
 
 namespace MarauderEngine.Components
 {
@@ -12,7 +13,10 @@ namespace MarauderEngine.Components
     {
 
         public Rectangle Rectangle;
-        public Circle CollisionCircle;
+        public Collider Collider;
+        
+        private Rectangle _rectangle;
+        private bool rectCollider = false; 
 
         public override Type type => GetType();
         public SolidColliderComponent() { }
@@ -25,18 +29,28 @@ namespace MarauderEngine.Components
 
             try
             {
-                CollisionCircle = new Circle(new Particle((entity).GetComponent<TransformComponent>().Position, 0),this, 64)
-                {
-                    Particle = {Restitution = 1}
-                };
+                //Collider = new Circle(new Particle((entity).GetComponent<TransformComponent>().Position, 0),this, 64)
+                //{
+                //    Particle = {Restitution = 1}
+                //};
             }
             catch (Exception ex)
             {
                 throw  new Exception("Entity does not have a Transform Component");
             }
 
-            PhysicsWorld.Instance.Add(CollisionCircle);
+            PhysicsWorld.Instance.Add(Collider);
 
+        }
+
+        public SolidColliderComponent(Entity.Entity entity, Polygon2 poly)
+        {
+            _data = new SolidCData();
+            _data.Center = Vector2.Zero;
+
+            Collider = new Collider(new Particle(entity.GetComponent<TransformComponent>().Position, 0),
+                poly, this);
+            RegisterComponent(entity, "SolidColliderComponent");
         }
 
         public SolidColliderComponent(MarauderEngine.Entity.Entity entity, Vector2 center)
@@ -45,17 +59,18 @@ namespace MarauderEngine.Components
             _data.Center = center;
             Rectangle = entity.collisionRectanlge;
             RegisterComponent(entity, "SolidColliderComponent");
-            
-            
-
-            //CollisionCircle = new Circle(new Particle(Owner.GetComponent<TransformComponent>().Position + center, 0),this, 64)
-            //{
-            //    Particle = { Restitution = 1 }
-            //};
-
-            //PhysicsWorld.Instance.Add(CollisionCircle);
-
         }
+
+        public SolidColliderComponent(MarauderEngine.Entity.Entity entity, Rectangle rectangle)
+        {
+            _data = new SolidCData();
+            Rectangle = entity.collisionRectanlge;
+            _rectangle = rectangle;
+            rectCollider = true; 
+            RegisterComponent(entity, "SolidColliderComponent");
+        }
+
+
         public SolidColliderComponent(MarauderEngine.Entity.Entity entity, Vector2 center, int radius)
         {
             _data = new SolidCData();
@@ -68,15 +83,11 @@ namespace MarauderEngine.Components
         }
 
 
-        public void RegisterPhysicsBody() 
+        public void RegisterPhysicsBody()
         {
-            Rectangle = Owner.collisionRectanlge;
-            CollisionCircle = new Circle(new Particle(Owner.GetComponent<TransformComponent>().Position + _data.Center, 0), this, _data.Radius)
-            {
-                Particle = { Restitution = 1 }
-            };
 
-            PhysicsWorld.Instance.Add(CollisionCircle);
+            Rectangle = Owner.collisionRectanlge;
+            PhysicsWorld.Instance.Add(Collider);
         }
 
         public override void RegisterComponent(Entity.Entity entity, string componentName)

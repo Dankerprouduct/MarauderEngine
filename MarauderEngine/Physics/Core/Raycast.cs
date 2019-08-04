@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using SharpMath2;
 
 namespace MarauderEngine.Physics.Core
 {
@@ -33,11 +34,11 @@ namespace MarauderEngine.Physics.Core
                 {
                     for (int c = 0; c < collidersInCell.Count; c++)
                     {
-                        if (collidersInCell[c].Intersects(rayPoint))
-                        {
-                            hitPosition = rayPoint.ToVector2();
-                            return true;
-                        }
+                        //if (collidersInCell[c].Intersects(rayPoint))
+                        //{
+                        //    hitPosition = rayPoint.ToVector2();
+                        //    return true;
+                        //}
                     }
                 }
             }

@@ -43,6 +43,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Windows\x86\Debug\MarauderEngine.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -52,6 +53,7 @@
     <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>federationsoilderhead_op6_icon.ico</ApplicationIcon>
@@ -130,11 +132,23 @@
     <Compile Include="GUI\UIWindow.cs" />
     <Compile Include="Physics\Core\ContactData.cs" />
     <Compile Include="Physics\Core\ICollider.cs" />
+    <Compile Include="Physics\Core\Math2\AxisAlignedLine2.cs" />
+    <Compile Include="Physics\Core\Math2\Circle2.cs" />
+    <Compile Include="Physics\Core\Math2\Line2.cs" />
+    <Compile Include="Physics\Core\Math2\Math2.cs" />
+    <Compile Include="Physics\Core\Math2\Polygon2.cs" />
+    <Compile Include="Physics\Core\Math2\Rect2.cs" />
+    <Compile Include="Physics\Core\Math2\RelativeRectangle2.cs" />
+    <Compile Include="Physics\Core\Math2\Rotation2.cs" />
+    <Compile Include="Physics\Core\Math2\Shape2.cs" />
+    <Compile Include="Physics\Core\Math2\ShapeUtils.cs" />
     <Compile Include="Physics\Core\Particle.cs" />
     <Compile Include="Physics\Core\PhysicsWorld.cs" />
     <Compile Include="Physics\Core\Raycast.cs" />
     <Compile Include="Physics\Core\Shapes\Circle.cs" />
+    <Compile Include="Physics\Core\Shapes\Collider.cs" />
     <Compile Include="Physics\Core\Shapes\Polygon.cs" />
+    <Compile Include="Physics\Core\Shapes\RectangleCollider.cs" />
     <Compile Include="Physics\Core\SpatialPartition\CellSpacePartition.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

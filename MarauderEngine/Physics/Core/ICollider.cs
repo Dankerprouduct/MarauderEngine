@@ -1,6 +1,7 @@
 ﻿using System;
 using MarauderEngine.Components;
 using Microsoft.Xna.Framework;
+using SharpMath2;
 
 namespace MarauderEngine.Physics.Core
 {
@@ -17,6 +18,8 @@ namespace MarauderEngine.Physics.Core
         bool Active { get; set; }
         int Layer { get; set; }
 
+        Polygon2 PhysicsCollider { get; set; }
+        Rotation2 Rotation { get; set; }
 
         IComponent Owner { get; set; }
 
@@ -24,7 +27,8 @@ namespace MarauderEngine.Physics.Core
 
         bool Intersects(ICollider other);
         
-        bool Intersects(Point other);
+
+        float GetRadius();
         
         void Update(GameTime gameTime);
 

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 
 namespace MarauderEngine.Entity
 {
+    [System.Obsolete]
     public class Decoration
     {
 
@@ -11,13 +12,13 @@ namespace MarauderEngine.Entity
         public Vector2 Position { get; set; }
 
 
-        [JsonIgnore]
-        public Rectangle CollisionRectangle
-        {
-            get
-            {
-                return new Rectangle((int)Position.X, (int)Position.Y, TextureManager.Tiles[DecorationID].Width, TextureManager.Decorations[DecorationID].Height); 
-            }
-        }
+        //[JsonIgnore]
+        //public Rectangle CollisionRectangle
+        //{
+        //    get
+        //    {
+        //        return new Rectangle((int)Position.X, (int)Position.Y, TextureManager.Tiles[DecorationID].Width, TextureManager.Decorations[DecorationID].Height); 
+        //    }
+        //}
     }
 }

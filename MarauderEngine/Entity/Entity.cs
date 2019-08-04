@@ -56,7 +56,7 @@ namespace MarauderEngine.Entity
             active = true;
             EntityData.EntityName = EntityName;
             EntityData.EntityType = this.GetType().UnderlyingSystemType;
-            Console.WriteLine("type set to " + EntityData.EntityType);
+            
             MarauderComponent.AddEntityType(this);
 
         }
@@ -341,7 +341,7 @@ namespace MarauderEngine.Entity
         }
         
         /// <summary>
-        /// A helper update funtion. use as needed as long as the entity calling it is being updated
+        /// A helper update function. use as needed as long as the entity calling it is being updated
         /// </summary>
         /// <param name="gameTime"></param>
         /// <param name="entity"></param>
